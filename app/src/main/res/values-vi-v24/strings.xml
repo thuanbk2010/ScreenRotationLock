@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="quick_help">
+        <![CDATA[
+        <p style="text-align:justify;">
+        <b>1. Xoay</b> thiết bị về hướng mà bạn mong muốn.<br><br>
+        <b>2.</b> Nhấn <b>Nút nổi</b> bên dưới để khóa hướng xoay màn hình.<br><br>
+        <b>3.</b> Nhấn <b>Nút nổi</b> lần nữa để mở khóa hướng xoay màn hình.<br><br>
+        <b>4.</b> Trên Nougat, bạn có hẳn một Ô Cài đặt nhanh để dễ dàng truy cập.
+        </p>
+        ]]>
+    </string>
+    <string name="how_to_use_content">Bạn cần mở ứng dụng, xoay màn hình về hướng bạn muốn (đa phần là ngang), và nhấn nút nổi
+        để khóa hướng xoay, rồi quay lại ứng dụng trước hoặc quay về màn hình chính để mở ứng dụng bạn muốn. Lưu ý là nếu trình khởi chạy của bạn
+        trực tiếp yêu cầu hướng xoay dọc, màn hình sẽ quay trở lại hướng dọc. Sau khi bạn mở ứng dụng mà mình mong muốn,
+        màn hình thiết bị sẽ quay trở lại hướng dọc/ngang mà bạn cần.
+
+        \nTrên Android 7 Nougat về sau, bạn có hẳn một Ô Cài đặt nhanh hoạt động tương tự như Ô có sẵn. Tuy nhiên, Ô Cài đặt nhanh của tôi có thể khóa
+        màn hình theo hướng hiện tại. Ví dụ, màn hình đang ở hướng ngang, bạn kéo mở bảng Cài đặt nhanh, nhấn Ô của tôi thì màn hình sẽ được khóa
+        theo hướng ngang. Do đó bạn không cần phải mở ứng dụng lên để thực hiện thao tác khóa.
+    </string>
+</resources>

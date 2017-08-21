@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">Khóa xoay m.hình</string>
+    <string name="thanks_first">Cảm ơn bạn đã tải về ứng dụng. Hãy đọc phần Trợ giúp để có thêm thông tin. Nếu bạn gặp vấn đề, vui lòng gửi
+        email cho tôi và tôi sẽ giúp đỡ bạn. Thông thường, tôi luôn trả lời các bạn trong vòng 24 giờ.
+    </string>
+    <string name="thanks_old">Cảm ơn bạn đã tin tưởng sử dụng ứng dụng. Tôi mong rằng nó đã và đang giúp ích cho bạn. Nếu vậy, xin vui lòng cho nó
+        vào sao trên Google Play. Nếu bạn gặp vấn đề, hãy gửi email cho tôi và tôi sẽ trả lời trong vòng 24 giờ.
+    </string>
+    <string name="request_permission">
+        <![CDATA[
+        <p style="text-align:justify;">
+        <b>Để hoạt động, ứng dụng cần được cấp quyền Sửa đổi cài đặt.<br><br></b>
+        Nhấn <b>nút</b> bên dưới để mở ứng dụng Cài đặt.
+        </p>
+        ]]>
+    </string>
+    <string name="device_not_supported">Thiết bị của bạn không được hỗ trợ</string>
+    <string name="quick_help">
+        <![CDATA[
+        <p style="text-align:justify;">
+        <b>1. Xoay</b> thiết bị về hướng mà bạn mong muốn.<br><br>
+        <b>2.</b> Nhấn <b>Nút nổi</b> bên dưới để khóa hướng xoay màn hình.<br><br>
+        <b>3.</b> Nhấn <b>Nút nổi</b> lần nữa để mở khóa hướng xoay màn hình.<br><br>
+        </p>
+        ]]>
+    </string>
+    <string name="view_help">Trợ giúp</string>
+    <string name="rotation_locked">Đã khóa xoay</string>
+    <string name="rotation_locked_long">Đã khóa hướng xoay màn hình</string>
+    <string name="rotation_unlocked">Kg khóa xoay</string>
+    <string name="rotation_unlocked_long">Đã mở khóa hướng xoay màn hình</string>
+    <string name="your_device_is_not_supported">Dường như thiết bị của bạn không được hỗ trợ.</string>
+    <string name="yuhapps_on_gplay">YUH_APPS trên G.Play</string>
+    <string name="activity_help">Trợ giúp</string>
+    <string name="help_welcome">Cảm ơn bạn đã sử dụng ứng dụng. Dưới đây là phần Trợ giúp.</string>
+    <string name="app_purpose">Ứng dụng hướng đến các điện thoại Android. Với đa số điện thoại, bạn chỉ có thể không khóa hướng xoay màn hình,
+        hoặc chỉ có thể khóa theo hướng dọc (0 độ). Điều này có thể gây một số khó khăn cho bạn khi xem các video trên YouTube hoặc trình duyệt
+        khi bạn muốn khóa hướng xoay theo hướng ngang để giữ video trong chế độ toàn màn hình.
+        \n\nỨng dụng được tạo ra cho mục đích đó. Với việc sử dụng ứng dụng, bạn có thể khóa hướng xoay màn hình với hướng ngang để xem video,
+        arnh hoặc dùng các ứng dụng khác mà không gặp trở ngại. Bạn cũng có thể dùng ứng dụng để khóa màn hình theo hướng dọc.
+        \n\nỨng dụng không có ảnh hưởng tới các ứng dụng khác và trò chơi có yêu cầu hướng xoay cụ thể như các trình khởi chạy, Hay Day, Asphalt 8.
+        Vui lòng không đổ lỗi cho tôi và yêu cầu sự can thiệp vào các ứng dụng như vậy.
+    </string>
+    <string name="how_to_use_title">Sử dụng ứng dụng như thế nào?</string>
+    <string name="how_to_use_content">Bạn cần mở ứng dụng, xoay màn hình về hướng bạn muốn (đa phần là ngang), và nhấn nút nổi
+        để khóa hướng xoay, rồi quay lại ứng dụng trước hoặc quay về màn hình chính để mở ứng dụng bạn muốn. Lưu ý là nếu trình khởi chạy của bạn
+        trực tiếp yêu cầu hướng xoay dọc, màn hình sẽ quay trở lại hướng dọc. Sau khi bạn mở ứng dụng mà mình mong muốn,
+        màn hình thiết bị sẽ quay trở lại hướng dọc/ngang mà bạn cần.
+    </string>
+    <string name="no_homescreen_widget_title">Tại sao không có widget trên màn hình chính?</string>
+    <string name="no_homescreen_widget_content">Tôi đẫ thử nghiệm tính năng. Thực tế nó hoạt động một phần. Tuy nhiên, vì những lí do sau nên tôi
+        sẽ không đưa tính năng đó vào:
+        \n\n-Nó yêu cầu trình khởi chạy phải không yêu cầu hướng xoay, tức là, trình khởi chạy phải hỗ trợ cả hướng xoay dọc và ngang,
+        điều này là không thể đối với các trình khởi chạy mặc định của nhà sản xuất và đa số các trình khởi chạy trên CH Play.
+        \n\n-Nó yêu cầu một service chạy ẩn và điều này ảnh hưởng xấu tới thời lượng pin.
+        \n\n-Nó gây tình trạng \"giật\" trên một số thiết bị cấu hình thấp.
+    </string>
+    <string name="no_qs_tile_interruption_title">Tại sao ứng dụng không cố thay đổi hành vi của Ô Cài đặt nhanh có sẵn?</string>
+    <string name="no_qs_tile_interruption_content">Đúng là có một số ứng dụng có thể thay đổi hành vi của Ô Cài đặt nhanh có sẵn, nhưng tôi không làm theo
+        hướng đó, vì chúng thay đổi các thiết lập mặc định của thiết bị. Quan trọng hơn hết, chúng không hoàn nguyên lại thiết lập hệ thống. Ứng dụng
+        của tôi không làm vậy. Nếu bạn không muốn dùng thì hãy gỡ nó ra và sẽ không có vấn đề với thiết bị của bạn.
+    </string>
+    <string name="wrong_uses_title">Một khi bạn đã cài đặt và dùng ứng dụng, hãy đừng sử dụng nó sai mục đích.</string>
+    <string name="wrong_uses_content">
+        - Nó không thay đổi hành vi của Ô Cài đặt nhanh có sẵn: Như tôi đã nói, không. Một số người dùng quá \"tồ\", tôi không hiểu vì sao, cho rằng khi cài
+        đặt xong ứng dụng thì họ có thể khóa màn hình BẰNG Ô CÀI ĐẶT NHANH CÓ SẴN. Không, nếu bạn muốn khóa hướng xoay thì cần sử dụng ứng dụng.
+        \n\n- Nó không làm xáo trộn các phím điều hướng: Điều này phụ thuộc vào phiên bản Android của nhà sản xuất và đó là vấn đề nằm ở họ, không phải tôi.
+        Nếu ứng dụng này làm xáo trộn các phím của bạn thì các ứng dụng tương tự trên CH Play cũng vậy.
+    </string>
+    <string name="known_issues_title">Các vấn đề đã biết</string>
+    <string name="known_issues_content">Nút nổi gặp vấn đề trên KitKat và các phiên bản Android trước (Android 4.X): Đó là vấn đề của class
+        FloatingActionButton trên Android 4.X. Tôi đã cố khắc phục nhưng không được. Chừng nào Google phát hành bản vá thì tôi không thể làm được gì.
+    </string>
+</resources>

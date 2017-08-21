@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="quick_help">
+        <![CDATA[
+        <p style="text-align:justify;">
+        <b>1. Rotate</b> the device screen to the orientation you want.<br><br>
+        <b>2.</b> Hit the <b>Floating button</b> below to lock your screen orientation.<br><br>
+        <b>3.</b> Hit the <b>Floating button</b> again to unlock your screen orientation.<br><br>
+        <b>4.</b> On Nougat, you have a QS tile for quick access.
+        </p>
+        ]]>
+    </string>
+    <string name="how_to_use_content">You\'ll need to open the app, rotate your screen to the orientation you need (mostly landscape), then hit the floating
+        button to lock the orientation, then go back to your app or home screen to launch the other app you want to launch. Please note that if your launcher
+        requests portrait orientation then the screen will rotate back to portrait mode. After you open the other app, the screen will go right back to the
+        landscape/portrait mode you expect.
+
+        \nOn Android 7 Nougat and later, you also have a QuickSetting Tile that acts similar the built-in Tile. However, my QS Tile can lock the device
+        orientation to the current one. For example, the screen is in landscape mode, you pull down the QS panel, hit my QS Tile and the orientation will
+        be locked to landscape. So you don\'t have to open the app to perform orientation lock.
+    </string>
+</resources>

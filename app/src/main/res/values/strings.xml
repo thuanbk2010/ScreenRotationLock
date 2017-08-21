@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">Screen Orientation Lock</string>
+    <string name="thanks_first">Thank you for downloading the app. Please read Help for more information. If you experience any problems,
+        please drop me an email so I can help you out. Usually, I send my replies within 24 hours.
+    </string>
+    <string name="thanks_old">Thank you for having been using the app. I hope it is helpful for you. If it is, please give it some
+        stars on Google Play. If you experience any problems, please drop me an email with some details and I\'ll help you back within 24 hours.
+    </string>
+    <string name="request_permission">
+        <![CDATA[
+        <p style="text-align:justify;">
+        <b>In order to work</b> you must grant WRITE SETTINGS permission to the app.<br><br>
+        Click the <b>button</b> below to open Settings app.
+        </p>
+        ]]>
+    </string>
+    <string name="device_not_supported">Seems like your device is not supported</string>
+    <string name="quick_help">
+        <![CDATA[
+        <p style="text-align:justify;">
+        <b>1. Rotate</b> the device screen to the orientation you want.<br><br>
+        <b>2.</b> Hit the <b>Floating button</b> below to lock your screen orientation.<br><br>
+        <b>3.</b> Hit the <b>Floating button</b> again to unlock your screen orientation.<br><br>
+        </p>
+        ]]>
+    </string>
+    <string name="view_help">Help</string>
+    <string name="rotation_locked">Orientation locked</string>
+    <string name="rotation_locked_long">Screen orientation is locked</string>
+    <string name="rotation_unlocked">Orientation unlocked</string>
+    <string name="rotation_unlocked_long">Screen orientation is unlocked</string>
+    <string name="your_device_is_not_supported">It looks like your device is not supported.</string>
+    <string name="yuhapps_on_gplay">YUH_APPS on G.Play</string>
+    <string name="activity_help">Help</string>
+    <string name="help_welcome">Thank you for downloading and using the Orientation Lock. Here is the Help section.</string>
+    <string name="app_purpose">The app targets Android handsets. On many of them, the you can either leave your screen orientation unlocked,
+        or lock it to the portrait mode (0 degree). That may cause some inconvenience if you are watching some videos on YouTube or browsers and you
+        want to lock the screen orientation to landscape in order to keep the video full screen.
+        \n\nThe app is made for that purpose. By using the app, you can lock your device screen orientation to landscape mode to enjoy full screen videos,
+        images or using some other apps without interruption. You can also use the app to lock your screen orientation to portrait mode as well.
+        \n\nThe app has no effect on apps and games that specifically request fixed orientation, for example: homescreen launchers, Hay Day, Asphalt 8.
+        Please don\'t blame and ask me to find a way to interrupt these apps and games.
+    </string>
+    <string name="how_to_use_title">How to use the app?</string>
+    <string name="how_to_use_content">You\'ll need to open the app, rotate your screen to the orientation you need (mostly landscape), then hit the floating
+        button to lock the orientation, then go back to your app or home screen to launch the other app you want to launch. Please note that if your launcher
+        explicitly requests portrait orientation then the screen will rotate back to portrait mode. After you open the other app, the screen will go right
+        back to the landscape/portrait mode you expect.
+    </string>
+    <string name="no_homescreen_widget_title">Why isn\'t there a homescreen widget?</string>
+    <string name="no_homescreen_widget_content">I have tried implemented the feature and yes, it works some how. However, here are some drawbacks that make
+        me decide to stop working on it:
+        \n\n-It requires your homescreen launcher does not have fixed orientation, in the other word, the launcher must support both portrait and landscape
+        modes, which most of default launchers, both by device manufacturers and some on Play Store, don\'t.
+        \n\n-It requires a background service running all the time, so that will negatively affect battery life.
+        \n\n-It lags on many devices, especially on low-end ones.
+    </string>
+    <string name="no_qs_tile_interruption_title">Why doesn\'t the app change the default Quick Settings Tile?</string>
+    <string name="no_qs_tile_interruption_content">Yes, there are some apps that change the behaviour of the default QS Tile, but I don\'t do so because
+        that may cause some trouble to your device configuration. Most importantly, they won\'t undo any changes they make to your device system. My app
+        does not. In case you don\'t like SOL, you can simply remove it and there would be no problem with your device system.
+    </string>
+    <string name="wrong_uses_title">Once you have the app installed, please don\'t use it wrong.</string>
+    <string name="wrong_uses_content">
+        - It doesn\'t change the behaviour of the default QS Tile: As I said above, it does not. Some brainless users, I don\'t know why, think that once
+        the app is installed then they can lock the screen orientation to landscape mode BY THE BUILT-IN QS Tile. NO. You\'ll need to use the app.
+        \n- It doesn\'t mess the soft keys: That depends on your customised Android variant by your manufacturer and that\'s their problem, not mine. If
+        this app messes your keys, other similar apps on Play Store also do the same.
+    </string>
+    <string name="known_issues_title">Known issues</string>
+    <string name="known_issues_content">The floating button lags on KitKat and earlier Android versions (Android 4.X) in landscape mode: That\'s the problem
+        of FloatingActionButton class on Android 4.X. I tried a lot to fix it but I can\'t. Unless Google releases a new version of the class, I can do nothing.
+    </string>
+</resources>
