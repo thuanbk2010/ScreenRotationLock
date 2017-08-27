@@ -25,7 +25,7 @@ public class QuickSettingsService extends TileService implements SettingsContent
     public void onCreate() {
         super.onCreate();
         mContentResolver = getContentResolver();
-        mSettingsContentObserver = new SettingsContentObserver(this);
+//        mSettingsContentObserver = new SettingsContentObserver(this);
     }
 
     @Override
@@ -55,6 +55,9 @@ public class QuickSettingsService extends TileService implements SettingsContent
     @Override
     public void onTileAdded() {
         super.onTileAdded();
+        if (mSettingsContentObserver == null) {
+            mSettingsContentObserver = new SettingsContentObserver(this);
+        }
         mSettingsContentObserver.setOnSettingsChangeListener(this);
         mContentResolver.registerContentObserver(Settings.System.CONTENT_URI, true, mSettingsContentObserver);
         boolean locked = isOrientationLocked();
@@ -65,6 +68,9 @@ public class QuickSettingsService extends TileService implements SettingsContent
     public void onTileRemoved() {
         super.onTileRemoved();
         mContentResolver.unregisterContentObserver(mSettingsContentObserver);
+        if (mSettingsContentObserver != null) {
+            mSettingsContentObserver = null;
+        }
     }
 
     @Override
@@ -80,6 +86,9 @@ public class QuickSettingsService extends TileService implements SettingsContent
     @Override
     public void onClick() {
         super.onClick();
+        if (isLocked()) {
+            return;
+        }
         if (Settings.System.canWrite(this)) {
             boolean locked = isOrientationLocked();
             updateTile(locked);
@@ -92,27 +101,9 @@ public class QuickSettingsService extends TileService implements SettingsContent
         }
     }
 
+
     private void updateTile(boolean locked) {
         Tile tile = getQsTile();
-        Icon newIcon;
-        String newLabel;
-        int newState;
-
-        // Change the tile to match the service status.
-        if (locked) {
-            newLabel = getString(R.string.rotation_unlocked);
-            newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.ic_screen_rotation_undefined_inactive);
-            newState = Tile.STATE_INACTIVE;
-        } else {
-            newLabel = getString(R.string.rotation_locked);
-            newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.ic_screen_lock_rotation);
-            newState = Tile.STATE_ACTIVE;
-        }
-
-        // Change the UI of the tile.
-//        tile.setLabel(newLabel);
-//        tile.setIcon(newIcon);
-//        tile.setState(newState);
         tile.setLabel(locked ? getString(R.string.rotation_unlocked) : getString(R.string.rotation_locked));
         tile.setIcon(Icon.createWithResource(getApplicationContext(),
                 locked ? R.drawable.ic_screen_rotation_undefined_inactive : R.drawable.ic_screen_lock_rotation));
