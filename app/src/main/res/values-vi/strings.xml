@@ -1,11 +1,18 @@
 <resources>
     <string name="app_name">Khóa xoay m.hình</string>
-    <string name="thanks_first">Cảm ơn bạn đã tải về ứng dụng. Hãy đọc phần Trợ giúp để có thêm thông tin. Nếu bạn gặp vấn đề, vui lòng gửi
+    <string name="thanks">Cảm ơn bạn đã sử dụng ứng dụng.</string>
+    <string name="thanks_first">Cảm ơn bạn đã sử dụng ứng dụng. Hãy đọc phần Trợ giúp để có thêm thông tin. Nếu bạn gặp vấn đề, vui lòng gửi
         email cho tôi và tôi sẽ giúp đỡ bạn. Thông thường, tôi luôn trả lời các bạn trong vòng 24 giờ.
     </string>
     <string name="thanks_old">Cảm ơn bạn đã tin tưởng sử dụng ứng dụng. Tôi mong rằng nó đã và đang giúp ích cho bạn. Nếu vậy, xin vui lòng cho nó
         vào sao trên Google Play. Nếu bạn gặp vấn đề, hãy gửi email cho tôi và tôi sẽ trả lời trong vòng 24 giờ.
+        \n\nTính năng mới: Giới thiệu Chế độ nhanh. Lập tức khóa hướng xoay màn hình vào góc 90 độ khi bật ứng dụng. Không phải chờ đợi.
     </string>
+    <string name="about">Ứng dụng được phát triển bởi YUH APPS. Nếu phát hiện vấn đề, hãy gửi email cho tôi để tôi có thể giúp bạn hoặc sửa chữa
+        trong bản phát hành sau.
+    </string>
+    <string name="okay">Đồng ý</string>
+    <string name="close">Đóng</string>
     <string name="request_permission">
         <![CDATA[
         <p style="text-align:justify;">
@@ -21,6 +28,7 @@
         <b>1. Xoay</b> thiết bị về hướng mà bạn mong muốn.<br><br>
         <b>2.</b> Nhấn <b>Nút nổi</b> bên dưới để khóa hướng xoay màn hình.<br><br>
         <b>3.</b> Nhấn <b>Nút nổi</b> lần nữa để mở khóa hướng xoay màn hình.<br><br>
+        <b>4.</b> Bạn có thể bật <b>Chế độ nhanh</b> để dễ dàng khóa xoay hơn.<br><br>
         </p>
         ]]>
     </string>
@@ -30,7 +38,7 @@
     <string name="rotation_unlocked">Kg khóa xoay</string>
     <string name="rotation_unlocked_long">Đã mở khóa hướng xoay màn hình</string>
     <string name="your_device_is_not_supported">Dường như thiết bị của bạn không được hỗ trợ.</string>
-    <string name="yuhapps_on_gplay">YUH_APPS trên G.Play</string>
+    <string name="yuhapps_on_gplay">Thông tin ứng dụng</string>
     <string name="activity_help">Trợ giúp</string>
     <string name="help_welcome">Cảm ơn bạn đã sử dụng ứng dụng. Dưới đây là phần Trợ giúp.</string>
     <string name="app_purpose">Ứng dụng hướng đến các điện thoại Android. Với đa số điện thoại, bạn chỉ có thể không khóa hướng xoay màn hình,
@@ -54,6 +62,7 @@
         điều này là không thể đối với các trình khởi chạy mặc định của nhà sản xuất và đa số các trình khởi chạy trên CH Play.
         \n\n-Nó yêu cầu một service chạy ẩn và điều này ảnh hưởng xấu tới thời lượng pin.
         \n\n-Nó gây tình trạng \"giật\" trên một số thiết bị cấu hình thấp.
+        \n\nHIỆN ĐÃ CÓ CHỨC NĂNG CHẾ ĐỘ NHANH ĐỂ NHANH CHÓNG KHÓA HƯỚNG NGANG_90 MÀN HÌNH. Hãy chọn Chế độ nhanh trong Màn hình trước để có thêm thông tin.
     </string>
     <string name="no_qs_tile_interruption_title">Tại sao ứng dụng không cố thay đổi hành vi của Ô Cài đặt nhanh có sẵn?</string>
     <string name="no_qs_tile_interruption_content">Đúng là có một số ứng dụng có thể thay đổi hành vi của Ô Cài đặt nhanh có sẵn, nhưng tôi không làm theo
@@ -71,4 +80,17 @@
     <string name="known_issues_content">Nút nổi gặp vấn đề trên KitKat và các phiên bản Android trước (Android 4.X): Đó là vấn đề của class
         FloatingActionButton trên Android 4.X. Tôi đã cố khắc phục nhưng không được. Chừng nào Google phát hành bản vá thì tôi không thể làm được gì.
     </string>
+    <string name="quick_mode">Chế độ nhanh</string>
+    <string name="quick_mode_message">Lập tức khóa hướng xoay màn hình vào góc 90 độ khi bật ứng dụng. Không phải chờ đợi. Để tận dụng ưu điểm tính năng,
+        hãy thêm ứng dụng vào Màn hình chính.
+        \n\nHiện tính năng đang được %s.
+    </string>
+    <string name="quick_mode_is_enabled">Chế độ nhanh đã được bật</string>
+    <string name="quick_mode_is_disabled">Chế độ nhanh đã được tắt</string>
+    <string name="enable">Bật</string>
+    <string name="disable">Tắt</string>
+    <string name="enabled"><b>BẬT</b></string>
+    <string name="disabled"><b>TẮT</b></string>
+    <string name="quick_mode_toast">Đã khóa hướng xoay màn hình theo hướng ngang 90 độ. Hãy mở một ứng dụng để các thay đổi có hiệu lực.
+        Để mở khóa, hãy mở ứng dụng, hoặc nhấn ô Cài đặt nhanh.</string>
 </resources>

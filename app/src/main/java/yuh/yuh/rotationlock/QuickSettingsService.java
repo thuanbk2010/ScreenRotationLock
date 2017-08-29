@@ -1,6 +1,7 @@
 package yuh.yuh.rotationlock;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,21 +12,30 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
+import android.support.annotation.StringRes;
+import android.view.LayoutInflater;
 import android.view.Surface;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 @TargetApi(Build.VERSION_CODES.N)
 public class QuickSettingsService extends TileService implements SettingsContentObserver.OnSettingsChangeListener {
 
+    @Deprecated
     private ContentResolver mContentResolver;
     private SettingsContentObserver mSettingsContentObserver;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mContentResolver = getContentResolver();
-//        mSettingsContentObserver = new SettingsContentObserver(this);
+//        if (mSettingsContentObserver == null) {
+//            mSettingsContentObserver = new SettingsContentObserver(this);
+//            getContentResolver().registerContentObserver(Settings.System.CONTENT_URI, true, mSettingsContentObserver);
+//            mSettingsContentObserver.setOnSettingsChangeListener(this);
+//        }
     }
 
     @Override
@@ -44,7 +54,15 @@ public class QuickSettingsService extends TileService implements SettingsContent
 
     @Override
     public IBinder onBind(Intent intent) {
-        return super.onBind(intent);
+        IBinder iBinder = super.onBind(intent);
+        if (mSettingsContentObserver == null) {
+            mSettingsContentObserver = new SettingsContentObserver(this);
+            getContentResolver().registerContentObserver(Settings.System.CONTENT_URI, true, mSettingsContentObserver);
+            mSettingsContentObserver.setOnSettingsChangeListener(this);
+        }
+        boolean locked = isOrientationLocked();
+        updateTile(!locked);
+        return iBinder;
     }
 
     @Override
@@ -57,9 +75,9 @@ public class QuickSettingsService extends TileService implements SettingsContent
         super.onTileAdded();
         if (mSettingsContentObserver == null) {
             mSettingsContentObserver = new SettingsContentObserver(this);
+            getContentResolver().registerContentObserver(Settings.System.CONTENT_URI, true, mSettingsContentObserver);
+            mSettingsContentObserver.setOnSettingsChangeListener(this);
         }
-        mSettingsContentObserver.setOnSettingsChangeListener(this);
-        mContentResolver.registerContentObserver(Settings.System.CONTENT_URI, true, mSettingsContentObserver);
         boolean locked = isOrientationLocked();
         updateTile(!locked);
     }
@@ -67,10 +85,20 @@ public class QuickSettingsService extends TileService implements SettingsContent
     @Override
     public void onTileRemoved() {
         super.onTileRemoved();
-        mContentResolver.unregisterContentObserver(mSettingsContentObserver);
         if (mSettingsContentObserver != null) {
+            getContentResolver().unregisterContentObserver(mSettingsContentObserver);
             mSettingsContentObserver = null;
         }
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        boolean b = super.onUnbind(intent);
+        if (mSettingsContentObserver != null) {
+            getContentResolver().unregisterContentObserver(mSettingsContentObserver);
+            mSettingsContentObserver = null;
+        }
+        return b;
     }
 
     @Override
@@ -85,8 +113,19 @@ public class QuickSettingsService extends TileService implements SettingsContent
 
     @Override
     public void onClick() {
+        int lastInstalledVersion = getSharedPreferences(MainActivity.PREF_FILE_NAME, MODE_PRIVATE).getInt("vc", 0);
+        if (lastInstalledVersion < BuildConfig.VERSION_CODE) {
+            getSharedPreferences(MainActivity.PREF_FILE_NAME, MODE_PRIVATE).edit().putInt("vc", BuildConfig.VERSION_CODE).apply();
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.DialogTheme)
+                    .setTitle(getString(R.string.nougat_qs_tile_warning_title))
+                    .setMessage(getString(R.string.nougat_qs_tile_warning_message))
+                    .setPositiveButton(getString(R.string.okay), null);
+            showDialog(dialog.create());
+            return;
+        }
         super.onClick();
         if (isLocked()) {
+            showToast(R.string.please_unlock_device);
             return;
         }
         if (Settings.System.canWrite(this)) {
@@ -107,7 +146,8 @@ public class QuickSettingsService extends TileService implements SettingsContent
         tile.setLabel(locked ? getString(R.string.rotation_unlocked) : getString(R.string.rotation_locked));
         tile.setIcon(Icon.createWithResource(getApplicationContext(),
                 locked ? R.drawable.ic_screen_rotation_undefined_inactive : R.drawable.ic_screen_lock_rotation));
-        tile.setState(locked ? Tile.STATE_INACTIVE : Tile.STATE_ACTIVE);
+        tile.setState(Tile.STATE_ACTIVE);
+//        tile.setState(locked ? Tile.STATE_INACTIVE : Tile.STATE_ACTIVE);
 
         // Need to call updateTile for the tile to pick up changes.
         tile.updateTile();
@@ -138,5 +178,19 @@ public class QuickSettingsService extends TileService implements SettingsContent
     private WindowManager getWindowManager() {
         // Use Context#getSystemService
         return this.getSystemService(WindowManager.class);
+    }
+
+    private void showToast(CharSequence message) {
+        Toast toast = new Toast(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.transient_notification, null);
+        TextView text = view.findViewById(R.id.message);
+        text.setText(message);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    private void showToast(@StringRes int message) {
+        showToast(getString(message));
     }
 }

@@ -19,4 +19,12 @@
         orientation to the current one. For example, the screen is in landscape mode, you pull down the QS panel, hit my QS Tile and the orientation will
         be locked to landscape. So you don\'t have to open the app to perform orientation lock.
     </string>
+    <string name="nougat_qs_tile_warning_title">Please remove and re-add the Tile</string>
+    <string name="nougat_qs_tile_warning_message">Please remove and re-add the Tile. The app might crash. But it will work normally after the Tile is re-added.
+        \n\nBecause you are on Nougat, so Quick mode is not recommended. Either you use the Tile or Quick mode. Using them both may cause the Tile not updating
+        state correctly.
+        \n\nAnd please remove SRL from Doze (and Samsung Battery Saving) list(s). The app is completely based on Android\'s APIs, so it does not eat any extra
+        energy than the default QS Tile of Android.
+    </string>
+    <string name="please_unlock_device">Please unlock your device</string>
 </resources>

@@ -18,9 +18,11 @@ import android.os.SystemClock;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -34,6 +36,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,39 +51,55 @@ import static android.view.Surface.*;
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener, View.OnLongClickListener, SettingsContentObserver.OnSettingsChangeListener {
 
+    public static final String PREF_FILE_NAME = "prefs";
+
     private enum FAB_ACTION { REQUEST_PERMISSION, PERFORM_LOCK }
 
-    private QuickMessage mQuickMsg;
+    private TextView mQuickMsg;
     private FloatingActionButton mFab;
     private TextView mHelp;
-
+    private AlertDialog mDialog;
+    private SharedPreferences mPreferences;
+    private ColorStateList mFabColorLocked, mFabColorUnlocked;
     private ContentResolver mContentResolver;
     private SettingsContentObserver mSettingsContentObserver;
-
-    private ColorStateList mFabColorLocked, mFabColorUnlocked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mPreferences = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
+        mContentResolver = getContentResolver();
+
+        boolean qm = mPreferences.getBoolean("qm", false); // Quick mode
+
+        if (qm && !isOrientationLocked() && savedInstanceState == null && canWriteSettings()) {
+            Settings.System.putInt(mContentResolver, Settings.System.ACCELEROMETER_ROTATION,  0);
+            Settings.System.putInt(mContentResolver, Settings.System.USER_ROTATION, ROTATION_90);
+            finish();
+            showToast(R.string.quick_mode_toast);
+            return;
+        }
+
         setContentView(R.layout.activity_main);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        Toolbar toolbar = bindView(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.app_icon);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.app_name);
 
-        mQuickMsg = bindView(R.id.quick_msg);
-        mHelp = bindView(R.id.help);
-        mFab  = bindView(R.id.fab);
+        mQuickMsg = findViewById(R.id.quick_msg);
+        mHelp = findViewById(R.id.help);
+        mFab  = findViewById(R.id.fab);
 
         mFab.setRippleColor(/*ContextCompat.getColor(this, android.R.color.white)*/ Color.parseColor("#80FFFFFF"));
         mFab.setOnClickListener(this);
         mFab.setOnLongClickListener(this);
         mFabColorLocked = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary));
         mFabColorUnlocked = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorSecondary));
+
         mQuickMsg.setVisibility(View.GONE);
-        mContentResolver = getContentResolver();
         mSettingsContentObserver = new SettingsContentObserver(this, new Handler());
         mSettingsContentObserver.setOnSettingsChangeListener(this);
 
@@ -90,34 +109,27 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.System.canWrite(this)) {
-            mHelp.setText(fromHtml(getString(R.string.request_permission)));
-            mFab.setBackgroundTintList(mFabColorLocked);
-            mFab.setImageResource(R.drawable.ic_settings);
-            mFab.setTag(FAB_ACTION.REQUEST_PERMISSION);
-        } else {
+        if (canWriteSettings()) {
 //            rotation = getWindowManager().getDefaultDisplay().getRotation();
             mContentResolver.registerContentObserver(Settings.System.CONTENT_URI, true, mSettingsContentObserver);
             mHelp.setText(fromHtml(getString(R.string.quick_help)));
             mFab.setTag(FAB_ACTION.PERFORM_LOCK);
             onSettingChange(null);
+        } else {
+            mHelp.setText(fromHtml(getString(R.string.request_permission)));
+            mFab.setBackgroundTintList(mFabColorLocked);
+            mFab.setImageResource(R.drawable.ic_settings);
+            mFab.setTag(FAB_ACTION.REQUEST_PERMISSION);
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mContentResolver.unregisterContentObserver(mSettingsContentObserver);
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
     }
 
     @Override
@@ -130,17 +142,17 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                MainActivity.this.finish();
+                showAboutDialog();
                 break;
             case R.id.yuhapps:
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://developer?id=YUH+APPS")));
-                } catch (ActivityNotFoundException exception) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=YUH+APPS")));
-                }
+                showAboutDialog();
                 break;
             case R.id.help:
                 startActivity(new Intent(this, HelpActivity.class));
+                break;
+            case R.id.quick_mode:
+                showQuickModeDialog();
+                break;
         }
         return true;
     }
@@ -159,10 +171,10 @@ public class MainActivity extends AppCompatActivity implements
                 showMessage(R.string.device_not_supported);
             }
         } else if (tag.equals(FAB_ACTION.PERFORM_LOCK)) {
-            final boolean lock = isOrientationLocked();
+            final boolean locked = isOrientationLocked();
             final int rotation = getWindowManager().getDefaultDisplay().getRotation();
-            Settings.System.putInt(mContentResolver, Settings.System.USER_ROTATION, lock ? ROTATION_0 : rotation);
-            Settings.System.putInt(mContentResolver, Settings.System.ACCELEROMETER_ROTATION, lock ? 1 : 0);
+            Settings.System.putInt(mContentResolver, Settings.System.ACCELEROMETER_ROTATION, locked ? 1 : 0);
+            Settings.System.putInt(mContentResolver, Settings.System.USER_ROTATION, locked ? ROTATION_0 : rotation);
         }
     }
 
@@ -178,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements
         showMessage(lock);
     }
 
+    @Deprecated
     private <V extends View> V bindView(@IdRes int id) {
         return (V) findViewById(id);
     }
@@ -188,6 +201,10 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             return Html.fromHtml(resource);
         }
+    }
+
+    private boolean canWriteSettings() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite(this);
     }
 
     private boolean isOrientationLocked() {
@@ -305,19 +322,94 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void showStartupDialog() {
-        final SharedPreferences preferences = getSharedPreferences("prefs", MODE_PRIVATE);
-        int lastInstalledVersion = preferences.getInt("vc", 0);
+        final String vc = "vc";
+        final SharedPreferences.Editor editor = mPreferences.edit();
+        int lastInstalledVersion = mPreferences.getInt(vc, 0);
         if (lastInstalledVersion <= BuildConfig.VERSION_CODE - 1) {
             boolean temp = isFirstInstall();
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setMessage(temp ? R.string.thanks_first : R.string.thanks_old);
-            dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    preferences.edit().putInt("vc", BuildConfig.VERSION_CODE).apply();
-                }
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.thanks)
+                    .setMessage(temp
+                        ? R.string.thanks_first
+                        : R.string.thanks_old)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                                editor.putInt(vc, BuildConfig.VERSION_CODE).apply();
+                        }
             });
-            dialog.show();
+            mDialog = dialog.show();
         }
+    }
+
+    private void showAboutDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")")
+                .setMessage(R.string.about)
+                .setNegativeButton(R.string.close, null)
+                .setNeutralButton("Google Play", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=yuh.yuh.rotationlock")));
+                        } catch (ActivityNotFoundException exception) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=yuh.yuh.rotationlock")));
+                        }
+                    }
+                });
+        mDialog = dialog.show();
+    }
+
+    private void showQuickModeDialog() {
+        final String qm = "qm";
+        final SharedPreferences.Editor editor = mPreferences.edit();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.quick_mode)
+                .setMessage(String.format(getString(R.string.quick_mode_message), mPreferences.getBoolean(qm, false)
+                        ? getString(R.string.enabled) : getString(R.string.disabled)))
+                .setPositiveButton(R.string.enable, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        editor.putBoolean(qm, true).apply();
+                        showToast(R.string.quick_mode_is_enabled, Gravity.CENTER);
+                    }
+                })
+                .setNegativeButton(R.string.disable, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        editor.putBoolean(qm, false).apply();
+                        showToast(R.string.quick_mode_is_disabled, Gravity.CENTER);
+                    }
+                });
+        mDialog = dialog.show();
+    }
+
+    private void showToast(CharSequence message, int gravity) {
+        Toast toast = new Toast(this);
+        View view = getLayoutInflater().inflate(R.layout.transient_notification, null);
+        TextView text = view.findViewById(R.id.message);
+        text.setText(message);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setGravity(gravity, 0, 0);
+        toast.show();
+    }
+
+    private void showToast(@StringRes int message, int gravity) {
+        showToast(getString(message), gravity);
+    }
+
+    private void showToast(CharSequence message) {
+        Toast toast = new Toast(this);
+        View view = getLayoutInflater().inflate(R.layout.transient_notification, null);
+        TextView text = view.findViewById(R.id.message);
+        text.setText(message);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    private void showToast(@StringRes int message) {
+        showToast(getString(message));
     }
 }

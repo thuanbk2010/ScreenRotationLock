@@ -1,1 +1,1 @@
-[{"outputType":{"type":"APK"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":8},"outputFile":{"path":"/home/yuh/AndroidStudioProjects/RotationLock/app/release/app-release.apk"},"properties":{"packageId":"yuh.yuh.rotationlock","split":""}}]
+[{"outputType":{"type":"APK"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":10},"path":"app-release.apk","properties":{"packageId":"yuh.yuh.rotationlock","split":"","minSdkVersion":"16"}}]

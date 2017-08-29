@@ -19,4 +19,12 @@
         màn hình theo hướng hiện tại. Ví dụ, màn hình đang ở hướng ngang, bạn kéo mở bảng Cài đặt nhanh, nhấn Ô của tôi thì màn hình sẽ được khóa
         theo hướng ngang. Do đó bạn không cần phải mở ứng dụng lên để thực hiện thao tác khóa.
     </string>
+    <string name="nougat_qs_tile_warning_title">Vui lòng gỡ và thêm lại Ô</string>
+    <string name="nougat_qs_tile_warning_message">Vui lòng gỡ và thêm lại Ô. Ứng dụng có thể bị dừng. Nhưng nó sẽ hoạt động bình thường sau khi thêm lại Ô.
+        \n\nVì bạn đang dùng Nougat, Chế độ nhanh không được khuyến nghị. Chỉ nên dùng một trong hai. Sử dụng cả hai có thể dẫn tới Ô cài đặt nhanh sẽ không
+        cập nhật trạng thái chính xác.
+        \n\nVui lòng xóa KXMH khỏi danh sách Tiết kiệm pin của Android (và của Samsung). Ứng dụng hoàn toàn dựa trên API của Android, nên nó không gây hao hụt
+        năng lượng hơn so với Ô gốc.
+    </string>
+    <string name="please_unlock_device">Vui lòng mở khóa thiết bị.</string>
 </resources>
