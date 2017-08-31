@@ -92,5 +92,10 @@
     <string name="enabled"><b>ENABLED</b></string>
     <string name="disabled"><b>DISABLED</b></string>
     <string name="quick_mode_toast">Screen orientation has been set to landscape_90. Please launch any app for the change to take effect.
-        To unlock orientation, just open the app, or hit the system QS Tile.</string>
+        To unlock orientation, just open the app, or hit the system QS Tile.
+    </string>
+    <string name="quick_unlock_title">Unlock orientation or launch the app?</string>
+    <string name="quick_unlock_message">Do you want to unlock screen orientation or launch the app? Click outside of this dialog to cancel.</string>
+    <string name="quick_unlock_unlock_button">Unlock screen orientation</string>
+    <string name="quick_unlock_launch_app_button">Launch app</string>
 </resources>

@@ -43,7 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
             android:layout_marginBottom="@dimen/fab_vertical_margin"
-            app:fabSize="normal"/>
+            app:fabSize="normal"
+            app:rippleColor="@color/colorFabRipple"/>
 
         <TextView
             android:id="@+id/quick_msg"
@@ -51,7 +52,7 @@
             android:layout_height="56dp"
             android:layout_gravity="center|bottom"
             android:layout_marginBottom="@dimen/fab_vertical_margin"
-            android:background="@drawable/quick_message_background"
+            android:background="@drawable/qm_background"
             android:gravity="center"
             android:paddingLeft="36dp"
             android:paddingRight="36dp"

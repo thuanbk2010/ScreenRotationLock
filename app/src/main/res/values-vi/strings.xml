@@ -92,5 +92,10 @@
     <string name="enabled"><b>BẬT</b></string>
     <string name="disabled"><b>TẮT</b></string>
     <string name="quick_mode_toast">Đã khóa hướng xoay màn hình theo hướng ngang 90 độ. Hãy mở một ứng dụng để các thay đổi có hiệu lực.
-        Để mở khóa, hãy mở ứng dụng, hoặc nhấn ô Cài đặt nhanh.</string>
+        Để mở khóa, hãy mở ứng dụng, hoặc nhấn ô Cài đặt nhanh.
+    </string>
+    <string name="quick_unlock_title">Mở khóa hướng xoay hay mở ứng dụng?</string>
+    <string name="quick_unlock_message">Bạn muốn mở khóa hướng xoay hay mở ứng dụng? Nhấn vào bất kì nơi nào bên ngoài để hủy bỏ.</string>
+    <string name="quick_unlock_unlock_button">Mở khóa hướng xoay</string>
+    <string name="quick_unlock_launch_app_button">Khởi động ứng dụng</string>
 </resources>

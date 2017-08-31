@@ -36,6 +36,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,14 +71,13 @@ public class MainActivity extends AppCompatActivity implements
 
         mPreferences = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
         mContentResolver = getContentResolver();
-
         boolean qm = mPreferences.getBoolean("qm", false); // Quick mode
 
-        if (qm && !isOrientationLocked() && savedInstanceState == null && canWriteSettings()) {
+        if (!isOrientationLocked() && qm && savedInstanceState == null && canWriteSettings()) {
             Settings.System.putInt(mContentResolver, Settings.System.ACCELEROMETER_ROTATION,  0);
             Settings.System.putInt(mContentResolver, Settings.System.USER_ROTATION, ROTATION_90);
-            finish();
             showToast(R.string.quick_mode_toast);
+            finish();
             return;
         }
 
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements
         mHelp = findViewById(R.id.help);
         mFab  = findViewById(R.id.fab);
 
-        mFab.setRippleColor(/*ContextCompat.getColor(this, android.R.color.white)*/ Color.parseColor("#80FFFFFF"));
+//        mFab.setRippleColor(/*ContextCompat.getColor(this, android.R.color.white)*/ Color.parseColor("#80FFFFFF"));
         mFab.setOnClickListener(this);
         mFab.setOnLongClickListener(this);
         mFabColorLocked = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary));
@@ -231,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                SystemClock.sleep(250);
                 Animation disappear = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
                 disappear.setAnimationListener(new Animation.AnimationListener() {
                     @Override
