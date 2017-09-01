@@ -80,10 +80,16 @@
     <string name="known_issues_content">Nút nổi gặp vấn đề trên KitKat và các phiên bản Android trước (Android 4.X): Đó là vấn đề của class
         FloatingActionButton trên Android 4.X. Tôi đã cố khắc phục nhưng không được. Chừng nào Google phát hành bản vá thì tôi không thể làm được gì.
     </string>
+    <string name="saved">Đã lưu thiết lập</string>
+    <string name="change_angle">Thay đổi góc</string>
     <string name="quick_mode">Chế độ nhanh</string>
-    <string name="quick_mode_message">Lập tức khóa hướng xoay màn hình vào góc 90 độ khi bật ứng dụng. Không phải chờ đợi. Để tận dụng ưu điểm tính năng,
-        hãy thêm ứng dụng vào Màn hình chính.
-        \n\nHiện tính năng đang được %s.
+    <string name="quick_mode_message">
+        <![CDATA[
+        Lập tức khóa hướng xoay màn hình vào góc %s khi bật ứng dụng. Không phải chờ đợi. Để tận dụng ưu điểm tính năng,
+        hãy thêm ứng dụng vào Màn hình chính.<br><br>
+        Hiện tính năng đang được <b>%s</b>.<br><br>
+        Nhấn vào bên ngoài hộp thoại này để đóng nó và không thay đổi thiết lập hiện tại.
+        ]]>
     </string>
     <string name="quick_mode_is_enabled">Chế độ nhanh đã được bật</string>
     <string name="quick_mode_is_disabled">Chế độ nhanh đã được tắt</string>
@@ -91,11 +97,21 @@
     <string name="disable">Tắt</string>
     <string name="enabled"><b>BẬT</b></string>
     <string name="disabled"><b>TẮT</b></string>
-    <string name="quick_mode_toast">Đã khóa hướng xoay màn hình theo hướng ngang 90 độ. Hãy mở một ứng dụng để các thay đổi có hiệu lực.
+    <string name="quick_mode_toast">Đã khóa hướng xoay màn hình theo hướng %s. Hãy mở một ứng dụng để các thay đổi có hiệu lực.
         Để mở khóa, hãy mở ứng dụng, hoặc nhấn ô Cài đặt nhanh.
     </string>
     <string name="quick_unlock_title">Mở khóa hướng xoay hay mở ứng dụng?</string>
     <string name="quick_unlock_message">Bạn muốn mở khóa hướng xoay hay mở ứng dụng? Nhấn vào bất kì nơi nào bên ngoài để hủy bỏ.</string>
     <string name="quick_unlock_unlock_button">Mở khóa hướng xoay</string>
-    <string name="quick_unlock_launch_app_button">Khởi động ứng dụng</string>
+    <string name="quick_unlock_launch_app_button">Chạy giao diện ứng dụng</string>
+    <string-array name="quick_unlock_options">
+        <item>Mở khóa hướng xoay</item>
+        <item>Chạy giao diện ứng dụng</item>
+    </string-array>
+    <string-array name="quick_mode_options">
+        <item>Dọc_0</item>
+        <item>Ngang_90</item>
+        <item>Dọc_180</item>
+        <item>Ngang_270</item>
+    </string-array>
 </resources>

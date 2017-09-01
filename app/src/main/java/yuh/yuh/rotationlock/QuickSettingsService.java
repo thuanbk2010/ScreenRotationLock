@@ -62,6 +62,9 @@ public class QuickSettingsService extends TileService implements SettingsContent
         }
         boolean locked = isOrientationLocked();
         updateTile(!locked);
+        if (!Settings.System.canWrite(this)) {
+            getQsTile().setState(Tile.STATE_INACTIVE);
+        }
         return iBinder;
     }
 
@@ -80,6 +83,9 @@ public class QuickSettingsService extends TileService implements SettingsContent
         }
         boolean locked = isOrientationLocked();
         updateTile(!locked);
+        if (!Settings.System.canWrite(this)) {
+            getQsTile().setState(Tile.STATE_INACTIVE);
+        }
     }
 
     @Override
