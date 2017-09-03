@@ -92,8 +92,11 @@ public class QuickSettingsService extends TileService implements SettingsContent
     public void onTileRemoved() {
         super.onTileRemoved();
         if (mSettingsContentObserver != null) {
-            getContentResolver().unregisterContentObserver(mSettingsContentObserver);
-            mSettingsContentObserver = null;
+            try {
+                getContentResolver().unregisterContentObserver(mSettingsContentObserver);
+            } catch (NullPointerException ignored) {
+
+            }
         }
     }
 
@@ -101,8 +104,11 @@ public class QuickSettingsService extends TileService implements SettingsContent
     public boolean onUnbind(Intent intent) {
         boolean b = super.onUnbind(intent);
         if (mSettingsContentObserver != null) {
-            getContentResolver().unregisterContentObserver(mSettingsContentObserver);
-            mSettingsContentObserver = null;
+            try {
+                getContentResolver().unregisterContentObserver(mSettingsContentObserver);
+            } catch (NullPointerException ignored) {
+
+            }
         }
         return b;
     }

@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                SystemClock.sleep(250);
+                SystemClock.sleep(375);
                 Animation disappear = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
                 disappear.setAnimationListener(new Animation.AnimationListener() {
                     @Override
@@ -291,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                SystemClock.sleep(375);
                 Animation disappear = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
                 disappear.setAnimationListener(new Animation.AnimationListener() {
                     @Override
@@ -383,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         editor.putBoolean("qm", !qm).apply();
-                        showToast(qm ? R.string.quick_mode_is_disabled : R.string.quick_mode_is_enabled, Gravity.CENTER);
+                        showMessage(qm ? R.string.quick_mode_is_disabled : R.string.quick_mode_is_enabled);
                     }
                 })
                 .setNeutralButton(R.string.change_angle, new DialogInterface.OnClickListener() {
@@ -411,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         editor.putInt("qmo", nqmo[0]).apply();
-                        showToast(R.string.saved);
+                        showMessage(R.string.saved);
                     }
                 })
                 .setNegativeButton(R.string.close, null);
