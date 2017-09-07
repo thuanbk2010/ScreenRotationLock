@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private enum FAB_ACTION { REQUEST_PERMISSION, PERFORM_LOCK }
 
+    private boolean quickMode;
     private TextView mQuickMsg;
     private FloatingActionButton mFab;
     private AppCompatTextView mHelp;
@@ -72,13 +73,14 @@ public class MainActivity extends AppCompatActivity implements
         mPreferences = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
         mContentResolver = getContentResolver();
 
-        boolean qm = mPreferences.getBoolean("qm", false); // Quick mode
+        quickMode = mPreferences.getBoolean("qm", false); // Quick mode
 
-        if (!isOrientationLocked() && qm && savedInstanceState == null && canWriteSettings()) {
+        if (!isOrientationLocked() && quickMode && savedInstanceState == null && canWriteSettings()) {
             int qmo = mPreferences.getInt("qmo", ROTATION_90);
             Settings.System.putInt(mContentResolver, Settings.System.ACCELEROMETER_ROTATION,  0);
             Settings.System.putInt(mContentResolver, Settings.System.USER_ROTATION, qmo);
-            showLongToast(String.format(getString(R.string.quick_mode_toast), getResources().getStringArray(R.array.quick_mode_options)[qmo]));
+            showLongToast(String.format(getString(R.string.quick_mode_toast),
+                    getResources().getStringArray(R.array.quick_mode_options)[qmo]));
             finish();
             return;
         }
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements
         if (canWriteSettings()) {
 //            rotation = getWindowManager().getDefaultDisplay().getRotation();
             mContentResolver.registerContentObserver(Settings.System.CONTENT_URI, true, mSettingsContentObserver);
-            mHelp.setText(fromHtml(getString(R.string.quick_help)));
+            mHelp.setText(fromHtml(quickMode ? getString(R.string.quick_mode_is_on) : getString(R.string.quick_help)));
             mFab.setTag(FAB_ACTION.PERFORM_LOCK);
             onSettingChange(null);
         } else {
@@ -200,17 +202,16 @@ public class MainActivity extends AppCompatActivity implements
         showMessage(lock);
     }
 
-    @Deprecated
-    private <V extends View> V bindView(@IdRes int id) {
-        return (V) findViewById(id);
-    }
-
     private Spanned fromHtml(String resource) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return Html.fromHtml(resource, 0);
         } else {
             return Html.fromHtml(resource);
         }
+    }
+
+    private Spanned fromHtml(@StringRes int resource) {
+        return fromHtml(getString(resource));
     }
 
     private boolean canWriteSettings() {
@@ -337,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements
         final String vc = "vc";
         final SharedPreferences.Editor editor = mPreferences.edit();
         int lastInstalledVersion = mPreferences.getInt(vc, 0);
-        if (lastInstalledVersion <= BuildConfig.VERSION_CODE - 1) {
+        if (lastInstalledVersion < BuildConfig.VERSION_CODE - 1) {
             boolean temp = isFirstInstall();
             AlertDialog.Builder dialog = new AlertDialog.Builder(this)
                     .setTitle(R.string.thanks)
@@ -356,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void showAboutDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")")
+                .setTitle(getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")")
                 .setMessage(R.string.about)
                 .setNegativeButton(R.string.close, null)
                 .setNeutralButton("Google Play", new DialogInterface.OnClickListener() {
@@ -373,21 +374,22 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void showQuickModeDialog() {
-        final boolean qm = mPreferences.getBoolean("qm", false);
         final SharedPreferences.Editor editor = mPreferences.edit();
         AlertDialog.Builder dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.quick_mode)
                 .setMessage(fromHtml(String.format(getString(R.string.quick_mode_message),
                         getResources().getStringArray(R.array.quick_mode_options)[mPreferences.getInt("qmo", ROTATION_90)],
-                        qm ? getString(R.string.enabled) : getString(R.string.disabled))))
-                .setPositiveButton(qm ? R.string.disable : R.string.enable, new DialogInterface.OnClickListener() {
+                        quickMode ? getString(R.string.enabled) : getString(R.string.disabled))))
+                .setPositiveButton(quickMode ? R.string.disable : R.string.enable, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        editor.putBoolean("qm", !qm).apply();
-                        showMessage(qm ? R.string.quick_mode_is_disabled : R.string.quick_mode_is_enabled);
+                        editor.putBoolean("qm", !quickMode).apply();
+                        showMessage(quickMode ? R.string.quick_mode_is_disabled : R.string.quick_mode_is_enabled);
+                        mHelp.setText(fromHtml(quickMode ? R.string.quick_help : R.string.quick_mode_is_on));
+                        quickMode = !quickMode;
                     }
                 })
-                .setNeutralButton(R.string.change_angle, new DialogInterface.OnClickListener() {
+                .setNeutralButton(R.string.change_mode, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         showChangeQuickModeDialog();

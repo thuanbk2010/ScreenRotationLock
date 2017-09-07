@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
@@ -94,6 +95,7 @@ public class QuickSettingsService extends TileService implements SettingsContent
         if (mSettingsContentObserver != null) {
             try {
                 getContentResolver().unregisterContentObserver(mSettingsContentObserver);
+                mSettingsContentObserver = null;
             } catch (NullPointerException ignored) {
 
             }
@@ -106,6 +108,7 @@ public class QuickSettingsService extends TileService implements SettingsContent
         if (mSettingsContentObserver != null) {
             try {
                 getContentResolver().unregisterContentObserver(mSettingsContentObserver);
+                mSettingsContentObserver = null;
             } catch (NullPointerException ignored) {
 
             }
@@ -125,15 +128,18 @@ public class QuickSettingsService extends TileService implements SettingsContent
 
     @Override
     public void onClick() {
-        int lastInstalledVersion = getSharedPreferences(MainActivity.PREF_FILE_NAME, MODE_PRIVATE).getInt("vc", 0);
+        SharedPreferences preferences = getSharedPreferences(MainActivity.PREF_FILE_NAME, MODE_PRIVATE);
+        int lastInstalledVersion = preferences.getInt("vc", 0);
         if (lastInstalledVersion < BuildConfig.VERSION_CODE) {
-            getSharedPreferences(MainActivity.PREF_FILE_NAME, MODE_PRIVATE).edit().putInt("vc", BuildConfig.VERSION_CODE).apply();
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.DialogTheme)
-                    .setTitle(getString(R.string.nougat_qs_tile_warning_title))
-                    .setMessage(getString(R.string.nougat_qs_tile_warning_message))
-                    .setPositiveButton(getString(R.string.okay), null);
-            showDialog(dialog.create());
-            return;
+            preferences.edit().putInt("vc", BuildConfig.VERSION_CODE).apply();
+            if (lastInstalledVersion < BuildConfig.VERSION_CODE - 1) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.DialogTheme)
+                        .setTitle(getString(R.string.nougat_qs_tile_warning_title))
+                        .setMessage(getString(R.string.nougat_qs_tile_warning_message))
+                        .setPositiveButton(getString(R.string.okay), null);
+                showDialog(dialog.create());
+                return;
+            }
         }
         super.onClick();
         if (isLocked()) {
@@ -142,8 +148,9 @@ public class QuickSettingsService extends TileService implements SettingsContent
         }
         if (Settings.System.canWrite(this)) {
             boolean locked = isOrientationLocked();
-            updateTile(locked);
-            putSettings(locked);
+            int orientation = getWindowManager().getDefaultDisplay().getRotation();
+            updateTile(locked, orientation);
+            putSettings(locked, orientation);
         } else {
             Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
             intent.setData(Uri.parse("package:" + this.getPackageName()));
@@ -154,26 +161,38 @@ public class QuickSettingsService extends TileService implements SettingsContent
 
 
     private void updateTile(boolean locked) {
+        int orientation = getWindowManager().getDefaultDisplay().getRotation();
+        boolean landscape = orientation == Surface.ROTATION_90 || orientation == Surface.ROTATION_270;
         Tile tile = getQsTile();
-        tile.setLabel(locked ? getString(R.string.rotation_unlocked) : getString(R.string.rotation_locked));
-        tile.setIcon(Icon.createWithResource(getApplicationContext(),
-                locked ? R.drawable.ic_screen_rotation_undefined_inactive : R.drawable.ic_screen_lock_rotation));
+        tile.setLabel(locked ? getString(R.string.rotation_unlocked) : landscape ? getString(R.string.landscape) : getString(R.string.portrait));
+        tile.setIcon(Icon.createWithResource(getApplicationContext(), locked ? R.drawable.ic_screen_rotation_undefined_inactive
+                : landscape ? R.drawable.ic_screen_lock_landscape
+                : R.drawable.ic_screen_lock_portrait));
         tile.setState(Tile.STATE_ACTIVE);
-//        tile.setState(locked ? Tile.STATE_INACTIVE : Tile.STATE_ACTIVE);
+        tile.updateTile();
+    }
 
-        // Need to call updateTile for the tile to pick up changes.
+    private void updateTile(boolean locked, int orientation) {
+        boolean landscape = orientation == Surface.ROTATION_90 || orientation == Surface.ROTATION_270;
+        Tile tile = getQsTile();
+        tile.setLabel(locked ? getString(R.string.rotation_unlocked) : landscape ? getString(R.string.landscape) : getString(R.string.portrait));
+        tile.setIcon(Icon.createWithResource(getApplicationContext(), locked ? R.drawable.ic_screen_rotation_undefined_inactive
+                : landscape ? R.drawable.ic_screen_lock_landscape
+                : R.drawable.ic_screen_lock_portrait));
+        tile.setState(Tile.STATE_ACTIVE);
         tile.updateTile();
     }
 
     private void putSettings(boolean locked) {
         ContentResolver resolver = getContentResolver();
-        if (locked) {
-            Settings.System.putInt(resolver, Settings.System.ACCELEROMETER_ROTATION, 1);
-            Settings.System.putInt(resolver, Settings.System.USER_ROTATION, Surface.ROTATION_0);
-        } else {
-            Settings.System.putInt(resolver, Settings.System.ACCELEROMETER_ROTATION, 0);
-            Settings.System.putInt(resolver, Settings.System.USER_ROTATION, getWindowManager().getDefaultDisplay().getRotation());
-        }
+        Settings.System.putInt(resolver, Settings.System.ACCELEROMETER_ROTATION, locked ? 1 : 0);
+        Settings.System.putInt(resolver, Settings.System.USER_ROTATION, locked ? Surface.ROTATION_0 : getWindowManager().getDefaultDisplay().getRotation());
+    }
+
+    private void putSettings(boolean locked, int orientation) {
+        ContentResolver resolver = getContentResolver();
+        Settings.System.putInt(resolver, Settings.System.ACCELEROMETER_ROTATION, locked ? 1 : 0);
+        Settings.System.putInt(resolver, Settings.System.USER_ROTATION, locked ? Surface.ROTATION_0 : orientation);
     }
 
     private boolean isOrientationLocked() {

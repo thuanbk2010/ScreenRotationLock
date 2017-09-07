@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.webkit.WebView;
 
 /**
  *
@@ -18,10 +19,13 @@ public class HelpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_help);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.app_name);
+        getSupportActionBar().setTitle(R.string.activity_help);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        WebView content = findViewById(R.id.content);
+        content.loadUrl("file:///android_asset/help/index.html");
     }
 
     @Override

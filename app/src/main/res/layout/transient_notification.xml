@@ -23,9 +23,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:shadowColor="#BB000000"
-        android:shadowRadius="2.75"/>
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"/>
 
 </LinearLayout>

@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Screen rotation lock</title>
+    <meta charset="utf-8" lang="en" />
+    <style>
+            body {
+                font-family: Roboto;
+                padding: 3vh;
+                text-align: justify;
+            }
+            
+            h2 {
+                color: #d35400;
+                font-weight: bold;
+                text-align: center;
+                text-transform: uppercase;
+            }
+            
+            h3, b, span {
+                color: #d35400;
+            }
+            
+            img {
+                left: 50%;
+                margin-left: -64px;
+                margin-top: -64px;
+                opacity: 0.2;
+                position: fixed;
+                top: 50%;
+                width: 128px;
+            }
+            
+        </style>
+    </head>
+
+    <body>
+        <img src="app_icon.png">
+        <h2>Screen rotation lock user guide</h2>
+
+        <p>Thank you for using Screen Rotation Lock, which is developed by <b>YUH APPS</b>. In case you find any bugs or need some assistance, please drop me an email. Usually, I'll reply your email within 24 hours.</p>
+
+        <h3>1. What is this app made for?</h3>
+        <p>The app primarily targets handset users who need to lock their screen rotation to landscape so they can enjoy fullscreen videos on YouTube, Netflix or browsers while their hands are moving around, for example, me. I have a Samsung Galaxy S7. Unfortunately, Sammy only allows me to lock the screen orientation to portrait. So I made this app to help myself and people who need the same thing. However, it should work fine on tablets, as well as can lock your screen orientation to portrait mode.</p>
+        <p>The app works on Android 4.1 and later, and offers a Quick Settings Tile on Android 7.0 onwards. So, Nougat and Oreo users are highly recommended to use the QS Tile, while Quick mode targets Jelly Bean - Marshmallow users.</p>
+        <p><b>SRL</b> supports phones and tablets only. It won't work on Android TV at all.</p>
+        <br>
+
+        <h3>2. What can't the app do?</h3>
+        <p>It has no effect on apps that explicitly requires locked orientation. For example, many games require landscape mode, while some apps, such as home launchers and Google's Hangouts only work in portrait mode. SRL has no effect on them.</p>
+        <p>SRL can't change the behaviour of the device's default Quick Settings Tile, or other rotation control app widgets. So, if you think once you have this app installed, you can lock your device orientation to landscape mode using the built-in QS Tile, you are so wrong.</p>
+        <br>
+
+        <h3>3. Prerequisite?</h3>
+        <p>In order to work, the app requires these conditions: You must allow screen rotation in device Settings app. On Marshmallow and later versions of Android, the <b>WRITE_SETTINGS</b> permission must be granted.</p>
+        <p>The app has nothing to do with root permission. If someone told you SRL needed root to work, then help me give him a punch or give her a slap.</p>
+        <br>
+
+        <h3>4. What is Quick mode</h3>
+        <p>Because the app is primarily designed to help you lock device orientation to landscape so your fullscreen video experience will not be interrupt, so I made <b>QUICK MODE</b>. Before the feature existed, Jelly Bean - Marshmallow users had to launch the app, rotate the screen to landscape then hit the Floating button, the exit the app. That might bring some inconvenience. So I created Quick mode. After you turned on Quick mode, everytime you open the app while the screen orientation is not locked, the app immediately locks the orientation to <span>landscape_90</span> mode without launching the app user interface. So, there's no wating at all. All you have to do is open an app for the change to take effect. If the app does not request fixed <span>portrait_0</span> mode, the screen will be in landscape mode.</p>
+        <p>Because I think Quick mode is good enough so there's no homescreen widget at all. To take the advantage of the feature, please add SRL to your homescreen.</p>
+        <p>Once you need to unlock the orientation, please launch the app and hit the Floating button.</p>
+        <p>By default, the mode is <span>landscape_90</span>. However, you can change the value to any mode that you mostly need. If you usually need both modes then please don't use Quick mode</p>
+        <p>Google introduced the QS Tile APIs on Android 7 and there's no way for 3rd party developers like me to bring the QS Tile to earlier versions of Android, so Quick mode is the recommended way for instant lock.</p>
+        <br>
+
+        <h3>5. Quick Settings Tile (Nougat and Oreo only)</h3>
+        <p>The app provides a QS Tile which acts similar to the system built-in one. However, unlike the system tile which only locks the device orientation to portrait_0, SRL's Tile can lock your orientation to the <b>CURRENT mode</b>. For example, the device is in the <span>landscape_270</span> mode then once you hit the SRL's Tile, the orientation will be locked to <span>landscape_270</span> mode. If the device is in the <span>portrait_180</span> mode, the screen will be locked to the <span>portrait_180</span> mode after the Tile is clicked.</p>
+        <p>Unless your device manufacturer has some restriction (such as Huawei), it's highly recommended to use the QS Tile instead of Quick mode.</p>
+        <p>After a new version is available, sometimes you need to remove and re-add the tile from/to QS panel for all changes to take effect. The app may crash after the tile is removed, but it should be working fine since the tile is re-added to the QS panel.</p>
+        <p>The QS Tile APIs are based on a background service. So there is always a service running in the background. However, it's the same as other QS Tile services including the pre-installed ones, so SRL's QS Tile service needs just that much battery as others without any extra percent. Please remove it from Battery optimization list(s), both Android Doze and Samsung Device Maintenance ones.</p>
+        <br>
+
+        <h3>6. Does the app require any fee?</h3>
+        <p>It's a big <b>NO</b>. The app is completely <b>FREE</b>. It's both free of charge and free of advertisement. There's no <b>PRO package, either</b>. It does not require INTERNET to work. So you can use it anywhere anytime.</p>
+        <p>If you wish to support me then you can give <b>SRL</b> some good stars on Google Play.</p>
+    </body>
+</html>

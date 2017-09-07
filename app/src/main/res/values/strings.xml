@@ -6,7 +6,7 @@
     </string>
     <string name="thanks_old">Thank you for having been using the app. I hope it is helpful for you. If it is, please give it some
         stars on Google Play. If you experience any problems, please drop me an email with some details. Usually, I\'ll send my replies within 24 hours.
-        \n\nNew feature: Introducing Quick mode. Immediately lock screen orientation to 90 degree angle when the app launch. No waiting.
+        \n\nNew feature: Introducing Quick mode. Immediately lock screen orientation to 90 degree mode when the app launch. No waiting.
     </string>
     <string name="about">The app is developed by YUH APPS. If you find any problems, please feel free to drop me an email so I can help you out or solve it
         in the next release.
@@ -33,6 +33,8 @@
         ]]>
     </string>
     <string name="view_help">Help</string>
+    <string name="portrait">Portrait</string>
+    <string name="landscape">Landscape</string>
     <string name="rotation_locked">Orientation locked</string>
     <string name="rotation_locked_long">Screen orientation is locked</string>
     <string name="rotation_unlocked">Orientation unlocked</string>
@@ -81,14 +83,13 @@
         of FloatingActionButton class on Android 4.X. I tried a lot to fix it but I can\'t. Unless Google releases a new version of the class, I can do nothing.
     </string>
     <string name="saved">Setting is saved</string>
-    <string name="change_angle">Change angle</string>
+    <string name="change_mode">Change mode</string>
     <string name="quick_mode">Quick mode</string>
     <string name="quick_mode_message">
         <![CDATA[
-        Immediately lock screen orientation to <b>%s</b> angle when you open the app. No waiting. To take advantage of the feature,
+        Immediately lock screen orientation to <b>%s</b> mode when you open the app. No waiting. To take advantage of the feature,
         please add the app to Home screen.<br><br>
-        At the moment, the feature is <b>%s</b>.<br><br>
-        Click outside of this dialog to close it without changing the current setting.
+        At the moment, the feature is <b>%s</b>.
         ]]>
     </string>
     <string name="quick_mode_is_enabled">Quick mode has been enabled</string>
@@ -97,13 +98,16 @@
     <string name="disable">Disable</string>
     <string name="enabled"><b>ENABLED</b></string>
     <string name="disabled"><b>DISABLED</b></string>
-    <string name="quick_mode_toast">Screen orientation has been set to %s. Please launch any app for the change to take effect.
-        To unlock orientation, just open the app, or hit the system QS Tile.
-    </string>
+    <string name="quick_mode_toast">Screen orientation has been set to %s. Please launch any app for the change to take effect.</string>
     <string name="quick_unlock_title">Unlock orientation or launch the app?</string>
     <string name="quick_unlock_message">Do you want to unlock screen orientation or launch the app? Click outside of this dialog to cancel.</string>
     <string name="quick_unlock_unlock_button">Unlock screen orientation</string>
     <string name="quick_unlock_launch_app_button">Launch app</string>
+    <string name="quick_mode_is_on">
+        <![CDATA[
+        Quick mode is <b>ON</b>.<br>
+        ]]>
+    </string>
     <string-array name="quick_unlock_options">
         <item>Unlock screen orientation</item>
         <item>Launch app interface</item>
