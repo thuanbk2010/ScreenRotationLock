@@ -27,4 +27,5 @@
         energy than the default QS Tile of Android.
     </string>
     <string name="please_unlock_device">Please unlock your device</string>
+    <string name="auto_rotate">Auto-rotate</string>
 </resources>

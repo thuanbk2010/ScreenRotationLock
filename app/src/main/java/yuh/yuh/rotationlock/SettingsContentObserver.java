@@ -31,11 +31,8 @@ class SettingsContentObserver extends ContentObserver {
     @Override
     public void onChange(boolean selfChange, Uri uri) {
         super.onChange(selfChange, uri);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Settings.System.canWrite(mContext)) {
-                mOnSettingsChangeListener.onSettingChange(mContext);
-            }
-        } else {
+        boolean canWrite = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite(mContext);
+        if (canWrite) {
             mOnSettingsChangeListener.onSettingChange(mContext);
         }
     }

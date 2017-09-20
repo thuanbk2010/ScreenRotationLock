@@ -9,9 +9,11 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 
 /**
- *
+ * HelpActivity. No need any further explanation.
  */
 public class HelpActivity extends AppCompatActivity {
+
+    private WebView mWebView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,13 +26,23 @@ public class HelpActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.activity_help);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        WebView content = findViewById(R.id.content);
-        content.loadUrl("file:///android_asset/help/index.html");
+        mWebView = findViewById(R.id.content);
+        if (savedInstanceState == null) {
+            mWebView.loadUrl("file:///android_asset/help/index.html");
+        } else {
+            mWebView.restoreState(savedInstanceState);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mWebView.saveState(outState);
     }
 }

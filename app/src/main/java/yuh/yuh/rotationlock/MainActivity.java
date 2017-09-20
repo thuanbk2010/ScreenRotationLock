@@ -49,6 +49,9 @@ import android.widget.Toast;
 
 import static android.view.Surface.*;
 
+/**
+ * MainActivity. There's no need any more explanation.
+ */
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener, View.OnLongClickListener, SettingsContentObserver.OnSettingsChangeListener {
 
@@ -56,7 +59,14 @@ public class MainActivity extends AppCompatActivity implements
 
     private enum FAB_ACTION { REQUEST_PERMISSION, PERFORM_LOCK }
 
+    /**
+     * Check if Quick Mode is enabled.
+     */
     private boolean quickMode;
+
+    /**
+     * Field members
+     */
     private TextView mQuickMsg;
     private FloatingActionButton mFab;
     private AppCompatTextView mHelp;
@@ -73,8 +83,11 @@ public class MainActivity extends AppCompatActivity implements
         mPreferences = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
         mContentResolver = getContentResolver();
 
-        quickMode = mPreferences.getBoolean("qm", false); // Quick mode
+        // Quick mode
+        quickMode = mPreferences.getBoolean("qm", false);
 
+        // If Quick mode is enabled, then quickly lock orientation to defined value, the default is 90 degree (landscape).
+        // We don't need any UI here. So, we call finish() and return.
         if (!isOrientationLocked() && quickMode && savedInstanceState == null && canWriteSettings()) {
             int qmo = mPreferences.getInt("qmo", ROTATION_90);
             Settings.System.putInt(mContentResolver, Settings.System.ACCELEROMETER_ROTATION,  0);
@@ -85,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
 
+        // UI preparation and register Observer.
         setContentView(R.layout.activity_main);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
@@ -97,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements
         mHelp = findViewById(R.id.help);
         mFab  = findViewById(R.id.fab);
 
-//        mFab.setRippleColor(/*ContextCompat.getColor(this, android.R.color.white)*/ Color.parseColor("#80FFFFFF"));
         mFab.setOnClickListener(this);
         mFab.setOnLongClickListener(this);
         mFabColorLocked = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary));
@@ -110,11 +123,16 @@ public class MainActivity extends AppCompatActivity implements
         showStartupDialog();
     }
 
+    /**
+     * Depends on whether user has granted {@link android.Manifest.permission.WRITE_SETTINGS}, the functionality of {@link #mFab}
+     * and the content of {@link #mHelp} will be different.
+     * @see #canWriteSettings()
+     * @see #onClick(View)
+     */
     @Override
     protected void onStart() {
         super.onStart();
         if (canWriteSettings()) {
-//            rotation = getWindowManager().getDefaultDisplay().getRotation();
             mContentResolver.registerContentObserver(Settings.System.CONTENT_URI, true, mSettingsContentObserver);
             mHelp.setText(fromHtml(quickMode ? getString(R.string.quick_mode_is_on) : getString(R.string.quick_help)));
             mFab.setTag(FAB_ACTION.PERFORM_LOCK);
@@ -169,9 +187,17 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+    /**
+     * Invoked when {@link #mFab} is clicked.
+     * Depends on whether user has granted {@link android.Manifest.permission.WRITE_SETTINGS}.
+     * @param view The mFab itself.
+     * @see #onStart()
+     * @see #canWriteSettings()
+     */
     @Override
     public void onClick(View view) {
         Object tag = view.getTag();
+        // If WRITE_SETTINGS permission is not granted.
         if (tag.equals(FAB_ACTION.REQUEST_PERMISSION)) {
             try {
                 @SuppressLint("InlinedApi")
@@ -180,9 +206,12 @@ public class MainActivity extends AppCompatActivity implements
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } catch (ActivityNotFoundException e) {
+                // Unsupported devices, such as Android TV or Watch.
                 showMessage(R.string.device_not_supported);
             }
-        } else if (tag.equals(FAB_ACTION.PERFORM_LOCK)) {
+        }
+        // If the permission is granted.
+        else if (tag.equals(FAB_ACTION.PERFORM_LOCK)) {
             final boolean locked = isOrientationLocked();
             final int rotation = getWindowManager().getDefaultDisplay().getRotation();
             Settings.System.putInt(mContentResolver, Settings.System.ACCELEROMETER_ROTATION, locked ? 1 : 0);
@@ -195,7 +224,10 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
-
+    /**
+     * Invoked everytime a setting is changed.
+     * @see SettingsContentObserver.OnSettingsChangeListener
+     */
     @Override
     public void onSettingChange(Context context) {
         boolean lock = isOrientationLocked();
@@ -218,6 +250,9 @@ public class MainActivity extends AppCompatActivity implements
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite(this);
     }
 
+    /**
+     * Check if screen orientation is locked or unlocked.
+     */
     private boolean isOrientationLocked() {
         switch (Settings.System.getInt(mContentResolver, Settings.System.ACCELEROMETER_ROTATION, -1)) {
             case 0:
@@ -229,9 +264,14 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void showMessage(final boolean lock) {
+    /**
+     * Show message.
+     * @see #mQuickMsg
+     * @param lock see {@link #isOrientationLocked()}
+     */
+    private void showMessage(final boolean locked) {
         mFab.hide();
-        mQuickMsg.setText(lock ? R.string.rotation_locked_long : R.string.rotation_unlocked_long);
+        mQuickMsg.setText(locked ? R.string.rotation_locked_long : R.string.rotation_unlocked_long);
         mQuickMsg.setVisibility(View.VISIBLE);
         Animation appear = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         appear.setAnimationListener(new Animation.AnimationListener() {
@@ -253,13 +293,8 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         mQuickMsg.setVisibility(View.GONE);
-                        if (lock) {
-                            mFab.setBackgroundTintList(mFabColorLocked);
-                            mFab.setImageResource(R.drawable.ic_screen_lock_rotation);
-                        } else {
-                            mFab.setBackgroundTintList(mFabColorUnlocked);
-                            mFab.setImageResource(R.drawable.ic_screen_rotation_undefined);
-                        }
+                        mFab.setBackgroundTintList(locked ? mFabColorLocked : mFabColorUnlocked);
+                        mFab.setImageResource(locked ? R.drawable.ic_screen_lock_rotation : R.drawable.ic_screen_rotation_undefined);
                         if (!mFab.isShown()) mFab.show();
                     }
 
@@ -279,6 +314,10 @@ public class MainActivity extends AppCompatActivity implements
         mQuickMsg.setAnimation(appear);
     }
 
+    /**
+     * Show message.
+     * @see #mQuickMsg
+     */
     private void showMessage(@StringRes int message) {
         mFab.hide();
         mQuickMsg.setText(message);
@@ -322,14 +361,16 @@ public class MainActivity extends AppCompatActivity implements
         mQuickMsg.setAnimation(appear);
     }
 
+    /**
+     * @return true if this is the first time install, false if user updates the app.
+     */
     private boolean isFirstInstall() {
         try {
             PackageInfo info      =   getPackageManager().getPackageInfo(getPackageName(), 0);
             long firstInstallTime =   info.firstInstallTime;
             long lastUpdateTime   =   info.lastUpdateTime;
             return firstInstallTime == lastUpdateTime;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+        } catch (PackageManager.NameNotFoundException ignored) {
             return false;
         }
     }
@@ -373,6 +414,9 @@ public class MainActivity extends AppCompatActivity implements
         mDialog = dialog.show();
     }
 
+    /**
+     * Quick mode dialog
+     */
     private void showQuickModeDialog() {
         final SharedPreferences.Editor editor = mPreferences.edit();
         AlertDialog.Builder dialog = new AlertDialog.Builder(this)
@@ -392,13 +436,16 @@ public class MainActivity extends AppCompatActivity implements
                 .setNeutralButton(R.string.change_mode, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        showChangeQuickModeDialog();
+                        showQuickModeOptionsDialog();
                     }
                 });
         mDialog = dialog.show();
     }
 
-    private void showChangeQuickModeDialog() {
+    /**
+     * Quick mode options dialog
+     */
+    private void showQuickModeOptionsDialog() {
         final int qmo = mPreferences.getInt("qmo", ROTATION_90);
         final int[] nqmo = new int[] {qmo};
         final SharedPreferences.Editor editor = mPreferences.edit();
@@ -421,6 +468,9 @@ public class MainActivity extends AppCompatActivity implements
         mDialog = dialog.show();
     }
 
+    /**
+     * Show Toast. The Toast is heavily customised.
+     */
     private void showToast(CharSequence message, int gravity) {
         Toast toast = new Toast(this);
         View view = getLayoutInflater().inflate(R.layout.transient_notification, null);
