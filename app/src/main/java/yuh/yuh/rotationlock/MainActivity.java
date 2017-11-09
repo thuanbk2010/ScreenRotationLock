@@ -2,6 +2,7 @@ package yuh.yuh.rotationlock;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +18,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -38,6 +40,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements
             int qmo = mPreferences.getInt("qmo", ROTATION_90);
             Settings.System.putInt(mContentResolver, Settings.System.ACCELEROMETER_ROTATION,  0);
             Settings.System.putInt(mContentResolver, Settings.System.USER_ROTATION, qmo);
-            showLongToast(String.format(getString(R.string.quick_mode_toast),
+            showLongToast(this, String.format(getString(R.string.quick_mode_toast),
                     getResources().getStringArray(R.array.quick_mode_options)[qmo]));
             finish();
             return;
@@ -101,9 +104,13 @@ public class MainActivity extends AppCompatActivity implements
         // UI preparation and register Observer.
         setContentView(R.layout.activity_main);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.app_icon);
+        toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_more));
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.app_name);
 
@@ -124,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     * Depends on whether user has granted {@link android.Manifest.permission.WRITE_SETTINGS}, the functionality of {@link #mFab}
+     * Depends on whether user has granted {@link android.Manifest.permission#WRITE_SETTINGS}, the functionality of {@link #mFab}
      * and the content of {@link #mHelp} will be different.
      * @see #canWriteSettings()
      * @see #onClick(View)
@@ -183,13 +190,17 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.quick_mode:
                 showQuickModeDialog();
                 break;
+            case R.id.hide_or_show_app:
+                boolean t = toggleAppIcon();
+                showMessage(t ? R.string.app_icon_is_hidden_in_launcher : R.string.app_icon_is_shown_in_launcher, t);
+                break;
         }
         return true;
     }
 
     /**
      * Invoked when {@link #mFab} is clicked.
-     * Depends on whether user has granted {@link android.Manifest.permission.WRITE_SETTINGS}.
+     * Depends on whether user has granted {@link android.Manifest.permission#WRITE_SETTINGS}.
      * @param view The mFab itself.
      * @see #onStart()
      * @see #canWriteSettings()
@@ -250,6 +261,17 @@ public class MainActivity extends AppCompatActivity implements
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite(this);
     }
 
+    @RequiresApi(24)
+    private boolean toggleAppIcon() {
+        boolean isAppIconHidden = mPreferences.getBoolean("ha", false);
+        PackageManager pm = this.getPackageManager();
+        ComponentName name = new ComponentName(getApplicationContext(), MainActivity.class);
+        pm.setComponentEnabledSetting(name, isAppIconHidden ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        mPreferences.edit().putBoolean("ha", !isAppIconHidden).apply();
+        return !isAppIconHidden;
+    }
+
     /**
      * Check if screen orientation is locked or unlocked.
      */
@@ -267,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * Show message.
      * @see #mQuickMsg
-     * @param lock see {@link #isOrientationLocked()}
+     * @param locked see {@link #isOrientationLocked()}
      */
     private void showMessage(final boolean locked) {
         mFab.hide();
@@ -318,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements
      * Show message.
      * @see #mQuickMsg
      */
-    private void showMessage(@StringRes int message) {
+    private void showMessage(@StringRes int message, final boolean longMessage) {
         mFab.hide();
         mQuickMsg.setText(message);
         mQuickMsg.setVisibility(View.VISIBLE);
@@ -331,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                SystemClock.sleep(375);
+                SystemClock.sleep(longMessage ? 750 :375);
                 Animation disappear = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
                 disappear.setAnimationListener(new Animation.AnimationListener() {
                     @Override
@@ -359,6 +381,10 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
         mQuickMsg.setAnimation(appear);
+    }
+
+    private void showMessage(@StringRes int message) {
+        showMessage(message, false);
     }
 
     /**
@@ -511,6 +537,34 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void showLongToast(@StringRes int message) {
-        showLongToast(getString(message));
+        showLongToast(this, getString(message));
+    }
+
+    static void showToast(Context context, CharSequence message) {
+        Toast toast = new Toast(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.transient_notification, null);
+        TextView text = view.findViewById(R.id.message);
+        text.setText(message);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    static void showToast(Context context, @StringRes int message) {
+        showToast(context, context.getString(message));
+    }
+
+    static void showLongToast(Context context, CharSequence message) {
+        Toast toast = new Toast(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.transient_notification, null);
+        TextView text = view.findViewById(R.id.message);
+        text.setText(message);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    static void showLongToast(Context context, @StringRes int message) {
+        showLongToast(context, context.getString(message));
     }
 }

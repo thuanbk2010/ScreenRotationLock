@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<color name="colorPrimary">#0097A7</color>-->
-    <!--<color name="colorPrimaryDark">#006064</color>-->
-    <!--<color name="colorSecondary">#B2EBF2</color>-->
-    <!--<color name="colorAccent">#0097A7</color>-->
-    <!--&lt;!&ndash;<color name="colorAccent">#00B8D4</color>&ndash;&gt;-->
-    <color name="colorFabRipple">#80FFFFFF</color>
-    <!--<color name="colorToast">#EEEEEE</color>-->
     <color name="colorPrimary">#d35400</color>
     <color name="colorPrimaryDark">#9b3e00</color>
     <color name="colorSecondary">#ffdac2</color>
     <color name="colorAccent">#ff8635</color>
+
+    <color name="toolbarBackground">@color/colorPrimary</color>
+    <color name="toolbarTitleText">@android:color/white</color>
+
+    <!--<color name="colorPrimary">#0097A7</color>-->
+    <!--<color name="colorPrimaryDark">#006064</color>-->
+    <!--<color name="colorSecondary">#B2EBF2</color>-->
+    <!--<color name="colorAccent">#0097A7</color>-->
+    <!--<color name="colorAccent">#00B8D4</color>-->
+    <color name="colorFabRipple">#80FFFFFF</color>
 </resources>

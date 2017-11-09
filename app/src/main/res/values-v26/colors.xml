@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="toolbarBackground">@android:color/white</color>
+    <color name="toolbarTitleText">@color/colorPrimary</color>
+    <color name="statusBar">#dddddd</color>
+    <color name="ic_launcher_background">#D35400</color>
+</resources>

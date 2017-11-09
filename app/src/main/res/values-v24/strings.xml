@@ -6,7 +6,7 @@
         <b>1. Rotate</b> the device screen to the orientation you want.<br><br>
         <b>2.</b> Hit the <b>Floating button</b> below to lock your screen orientation.<br><br>
         <b>3.</b> Hit the <b>Floating button</b> again to unlock your screen orientation.<br><br>
-        <b>4.</b> On Nougat, you have a QS tile for quick access.
+        <b>4.</b> On Nougat and Oreo, you have a QS tile for quick access.
         </p>
         ]]>
     </string>
@@ -28,4 +28,9 @@
     </string>
     <string name="please_unlock_device">Please unlock your device</string>
     <string name="auto_rotate">Auto-rotate</string>
+    <string name="hide_or_show_app_icon">Hide or show app icon</string>
+    <string name="hide_app_icon">Hide or show app icon</string>
+    <string name="show_app_icon">Hide or show app icon</string>
+    <string name="app_icon_is_shown_in_launcher">App icon is now shown in launcher(s).</string>
+    <string name="app_icon_is_hidden_in_launcher">App icon is now hidden in launcher(s). To enable it, long press on the QS Tile.</string>
 </resources>

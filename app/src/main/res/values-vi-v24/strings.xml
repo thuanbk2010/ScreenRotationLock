@@ -6,7 +6,7 @@
         <b>1. Xoay</b> thiết bị về hướng mà bạn mong muốn.<br><br>
         <b>2.</b> Nhấn <b>Nút nổi</b> bên dưới để khóa hướng xoay màn hình.<br><br>
         <b>3.</b> Nhấn <b>Nút nổi</b> lần nữa để mở khóa hướng xoay màn hình.<br><br>
-        <b>4.</b> Trên Nougat, bạn có hẳn một Ô Cài đặt nhanh để dễ dàng truy cập.
+        <b>4.</b> Trên Nougat và Oreo, bạn có hẳn một Ô Cài đặt nhanh để dễ dàng truy cập.
         </p>
         ]]>
     </string>
@@ -28,4 +28,9 @@
     </string>
     <string name="please_unlock_device">Vui lòng mở khóa thiết bị.</string>
     <string name="auto_rotate">Tự động xoay</string>
+    <string name="hide_or_show_app_icon">Ẩn/hiện biểu tượng ư.d.</string>
+    <string name="hide_app_icon">Ẩn biểu tượng ư.d.</string>
+    <string name="show_app_icon">Hiện biểu tượng ư.d.</string>
+    <string name="app_icon_is_shown_in_launcher">Biểu tượng ứng dụng được hiển thị trong trình khởi chạy.</string>
+    <string name="app_icon_is_hidden_in_launcher">Biểu tượng ứng dụng được ẩn đi trong trình khởi chạy. Để mở lại, hãy nhấn giữ ô Cài đặt nhanh.</string>
 </resources>

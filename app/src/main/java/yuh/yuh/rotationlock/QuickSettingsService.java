@@ -58,11 +58,6 @@ public class QuickSettingsService extends TileService implements SettingsContent
     @Override
     public void onTileAdded() {
         super.onTileAdded();
-        boolean locked = isOrientationLocked();
-        updateTile(!locked);
-        if (!Settings.System.canWrite(this)) {
-            getQsTile().setState(Tile.STATE_INACTIVE);
-        }
     }
 
     /**
@@ -71,6 +66,8 @@ public class QuickSettingsService extends TileService implements SettingsContent
     @Override
     public void onStartListening() {
         super.onStartListening();
+        boolean locked = isOrientationLocked();
+        updateTile(!locked);
         if (mSettingsContentObserver == null) {
             mSettingsContentObserver = new SettingsContentObserver(this);
             getContentResolver().registerContentObserver(Settings.System.CONTENT_URI, true, mSettingsContentObserver);
@@ -121,10 +118,10 @@ public class QuickSettingsService extends TileService implements SettingsContent
         super.onClick();
 
         // If the screen is locked, show a quick Toast and perform no action.
-        if (isLocked()) {
-            showToast(R.string.please_unlock_device);
-            return;
-        }
+//        if (isLocked()) {
+//            MainActivity.showToast(this, R.string.please_unlock_device);
+//            return;
+//        }
 
         // Okay, the screen is not locked, perform (un)lock action based on current status if user has granted the
         // Manifest.WRITE_SETTINGS permission. If not, then request the permission.
@@ -144,7 +141,7 @@ public class QuickSettingsService extends TileService implements SettingsContent
      * Update the Tile.
      * @param locked The current orientation lock status. If it is locked, then do unlock, and vice versa.
      *
-     * Since version 3.01(12), the inner orientation instance is got from {@link Settings.System.USER_ROTATION} instead of from device sensor.
+     * Since version 3.01(12), the inner orientation instance is got from {@link Settings.System#USER_ROTATION} instead of from device sensor.
      * This should fix the wrong state if user clicks the built-in QS Tile.
      */
     private void updateTile(boolean locked) {
