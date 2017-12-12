@@ -60,6 +60,11 @@ public class QuickSettingsService extends TileService implements SettingsContent
         super.onTileAdded();
     }
 
+    @Override
+    public IBinder onBind(Intent intent) {
+        return super.onBind(intent);
+    }
+
     /**
      * Called when the QS Tile enters the listening state.
      */
@@ -104,24 +109,10 @@ public class QuickSettingsService extends TileService implements SettingsContent
         int lastInstalledVersion = preferences.getInt("vc", 0);
         if (lastInstalledVersion < BuildConfig.VERSION_CODE) {
             preferences.edit().putInt("vc", BuildConfig.VERSION_CODE).apply();
-//            if (lastInstalledVersion < BuildConfig.VERSION_CODE) {
-//                AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.DialogTheme)
-//                        .setTitle(getString(R.string.nougat_qs_tile_warning_title))
-//                        .setMessage(getString(R.string.nougat_qs_tile_warning_message))
-//                        .setPositiveButton(getString(R.string.okay), null);
-//                showDialog(dialog.create());
-//                return;
-//            }
         }
 
         // Super method
         super.onClick();
-
-        // If the screen is locked, show a quick Toast and perform no action.
-//        if (isLocked()) {
-//            MainActivity.showToast(this, R.string.please_unlock_device);
-//            return;
-//        }
 
         // Okay, the screen is not locked, perform (un)lock action based on current status if user has granted the
         // Manifest.WRITE_SETTINGS permission. If not, then request the permission.
@@ -160,8 +151,7 @@ public class QuickSettingsService extends TileService implements SettingsContent
 
         // Update the Tile
         Tile tile = getQsTile();
-        tile.setLabel(locked ? getString(R.string.auto_rotate) : landscape ? getString(R.string.landscape)
-                : getString(R.string.portrait));
+        tile.setLabel(locked ? getString(R.string.auto_rotate) : landscape ? getString(R.string.landscape) : getString(R.string.portrait));
         tile.setIcon(Icon.createWithResource(this, locked ? R.drawable.ic_screen_rotation_undefined_inactive
                 : landscape ? R.drawable.ic_screen_lock_landscape
                 : R.drawable.ic_screen_lock_portrait));
@@ -202,7 +192,7 @@ public class QuickSettingsService extends TileService implements SettingsContent
             case 1:
                 return false;
             default:
-                throw new IllegalStateException("Orientation cannot be got");
+                throw new IllegalStateException("Cannot detect orientation.");
         }
     }
 
@@ -227,6 +217,6 @@ public class QuickSettingsService extends TileService implements SettingsContent
     }
 
     private void showToast(@StringRes int message) {
-        showToast(getString(message));
+        showToast(getText(message));
     }
 }
