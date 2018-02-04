@@ -14,23 +14,15 @@
     <string name="okay">Đồng ý</string>
     <string name="close">Đóng</string>
     <string name="request_permission">
-        <![CDATA[
-        <p style="text-align:justify;">
-        <b>Để hoạt động, ứng dụng cần được cấp quyền Sửa đổi cài đặt.<br><br></b>
+        Để hoạt động, ứng dụng cần được cấp quyền <b>Sửa đổi cài đặt</b>.
         Nhấn <b>nút</b> bên dưới để mở ứng dụng Cài đặt.
-        </p>
-        ]]>
     </string>
     <string name="device_not_supported">Thiết bị của bạn không được hỗ trợ</string>
     <string name="quick_help">
-        <![CDATA[
-        <p style="text-align:justify;">
-        <b>1. Xoay</b> thiết bị về hướng mà bạn mong muốn.<br><br>
-        <b>2.</b> Nhấn <b>Nút nổi</b> bên dưới để khóa hướng xoay màn hình.<br><br>
-        <b>3.</b> Nhấn <b>Nút nổi</b> lần nữa để mở khóa hướng xoay màn hình.<br><br>
-        <b>4.</b> Bạn có thể bật <b>Chế độ nhanh</b> để dễ dàng khóa xoay hơn.<br><br>
-        </p>
-        ]]>
+        <b>1. Xoay</b> thiết bị về hướng mà bạn mong muốn.
+        \n\n<b>2.</b> Nhấn <b>Nút nổi</b> bên dưới để khóa hướng xoay màn hình.
+        \n\n<b>3.</b> Nhấn <b>Nút nổi</b> lần nữa để mở khóa hướng xoay màn hình.
+        \n\n<b>4.</b> Bạn có thể bật <b>Chế độ nhanh</b> để dễ dàng khóa xoay hơn.
     </string>
     <string name="view_help">Trợ giúp</string>
     <string name="portrait">Dọc</string>
@@ -86,11 +78,9 @@
     <string name="change_mode">Thay đổi góc</string>
     <string name="quick_mode">Chế độ nhanh</string>
     <string name="quick_mode_message">
-        <![CDATA[
         Lập tức khóa hướng xoay màn hình vào góc %s khi bật ứng dụng. Không phải chờ đợi. Để tận dụng ưu điểm tính năng,
-        hãy thêm ứng dụng vào Màn hình chính.<br><br>
-        Hiện tính năng đang được <b>%s</b>.
-        ]]>
+        hãy thêm ứng dụng vào Màn hình chính.
+        \n\nHiện tính năng đang được <b>%s</b>.
     </string>
     <string name="quick_mode_is_enabled">Chế độ nhanh đã được bật</string>
     <string name="quick_mode_is_disabled">Chế độ nhanh đã được tắt</string>
@@ -103,11 +93,8 @@
     <string name="quick_unlock_message">Bạn muốn mở khóa hướng xoay hay mở ứng dụng? Nhấn vào bất kì nơi nào bên ngoài để hủy bỏ.</string>
     <string name="quick_unlock_unlock_button">Mở khóa hướng xoay</string>
     <string name="quick_unlock_launch_app_button">Chạy giao diện ứng dụng</string>
-    <string name="quick_mode_is_on">
-        <![CDATA[
-        Chế độ nhanh đang được <b>BẬT</b>.<br>
-        ]]>
-    </string>
+    <string name="quick_mode_is_on">Chế độ nhanh đang được <b>BẬT</b>.</string>
+
     <string-array name="quick_unlock_options">
         <item>Mở khóa hướng xoay</item>
         <item>Chạy giao diện ứng dụng</item>

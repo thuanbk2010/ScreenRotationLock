@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="quick_help">
-        <![CDATA[
-        <p style="text-align:justify;">
-        <b>1. Rotate</b> the device screen to the orientation you want.<br><br>
-        <b>2.</b> Hit the <b>Floating button</b> below to lock your screen orientation.<br><br>
-        <b>3.</b> Hit the <b>Floating button</b> again to unlock your screen orientation.<br><br>
-        <b>4.</b> On Nougat and Oreo, you have a QS tile for quick access.
-        </p>
-        ]]>
+        <b>1. Rotate</b> the device screen to the orientation you want.
+        \n\n<b>2.</b> Hit the <b>Floating button</b> below to lock your screen orientation.
+        \n\n<b>3.</b> Hit the <b>Floating button</b> again to unlock your screen orientation.
+        \n\n<b>4.</b> On Nougat and Oreo, you have a QS tile for quick access.
     </string>
     <string name="how_to_use_content">You\'ll need to open the app, rotate your screen to the orientation you need (mostly landscape), then hit the floating
         button to lock the orientation, then go back to your app or home screen to launch the other app you want to launch. Please note that if your launcher
@@ -26,11 +22,12 @@
         \n\nAnd please remove SRL from Doze (and Samsung Battery Saving) list(s). The app is completely based on Android\'s APIs, so it does not eat any extra
         energy than the default QS Tile of Android.
     </string>
+    <string name="tile_has_problem">There\'s a problem with the QS Tile. Please remove and re-add it.</string>
     <string name="please_unlock_device">Please unlock your device</string>
     <string name="auto_rotate">Auto-rotate</string>
     <string name="hide_or_show_app_icon">Hide or show app icon</string>
-    <string name="hide_app_icon">Hide or show app icon</string>
-    <string name="show_app_icon">Hide or show app icon</string>
-    <string name="app_icon_is_shown_in_launcher">App icon is now shown in launcher(s).</string>
-    <string name="app_icon_is_hidden_in_launcher">App icon is now hidden in launcher(s). To enable it, long press on the QS Tile.</string>
+    <string name="hide_app_icon">Hide app icon</string>
+    <string name="show_app_icon">Show app icon</string>
+    <string name="app_icon_is_shown_in_launcher">App icon is now shown in launcher.</string>
+    <string name="app_icon_is_hidden_in_launcher">App icon is now hidden in launcher. To enable it, long press on the QS Tile.</string>
 </resources>

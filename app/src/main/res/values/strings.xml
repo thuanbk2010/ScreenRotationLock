@@ -14,23 +14,15 @@
     <string name="okay">Okay</string>
     <string name="close">Close</string>
     <string name="request_permission">
-        <![CDATA[
-        <p style=\"text-align:justify\">
-        <b>In order to work</b> you must grant <b>WRITE SETTINGS</b> permission to the app.<br><br>
+        In order to work, you must grant <b>WRITE SETTINGS</b> permission to the app.
         Click the <b>button</b> below to open Settings app.
-        </p>
-        ]]>
     </string>
     <string name="device_not_supported">Seems like your device is not supported</string>
     <string name="quick_help">
-        <![CDATA[
-        <p style="text-align:justify">
-        <b>1. Rotate</b> the device screen to the orientation you want.<br><br>
-        <b>2.</b> Hit the <b>Floating button</b> below to lock your screen orientation.<br><br>
-        <b>3.</b> Hit the <b>Floating button</b> again to unlock your screen orientation.<br><br>
-        <b>4.</b> You can enable <b>Quick mode</b> for instant orientation lock.<br><br>
-        </p>
-        ]]>
+        <b>1. Rotate</b> the device screen to the orientation you want.
+        \n\n<b>2.</b> Hit the <b>Floating button</b> below to lock your screen orientation.
+        \n\n<b>3.</b> Hit the <b>Floating button</b> again to unlock your screen orientation.
+        \n\n<b>4.</b> You can enable <b>Quick mode</b> for instant orientation lock.
     </string>
     <string name="view_help">Help</string>
     <string name="portrait">Portrait</string>
@@ -86,11 +78,9 @@
     <string name="change_mode">Change mode</string>
     <string name="quick_mode">Quick mode</string>
     <string name="quick_mode_message">
-        <![CDATA[
         Immediately lock screen orientation to <b>%s</b> mode when you open the app. No waiting. To take advantage of the feature,
-        please add the app to Home screen.<br><br>
+        please add the app to Home screen.
         At the moment, the feature is <b>%s</b>.
-        ]]>
     </string>
     <string name="quick_mode_is_enabled">Quick mode has been enabled</string>
     <string name="quick_mode_is_disabled">Quick mode has been disabled</string>
@@ -103,11 +93,8 @@
     <string name="quick_unlock_message">Do you want to unlock screen orientation or launch the app? Click outside of this dialog to cancel.</string>
     <string name="quick_unlock_unlock_button">Unlock screen orientation</string>
     <string name="quick_unlock_launch_app_button">Launch app</string>
-    <string name="quick_mode_is_on">
-        <![CDATA[
-        Quick mode is <b>ON</b>.<br>
-        ]]>
-    </string>
+    <string name="quick_mode_is_on">Quick mode is <b>ON</b>.</string>
+
     <string-array name="quick_unlock_options">
         <item>Unlock screen orientation</item>
         <item>Launch app interface</item>

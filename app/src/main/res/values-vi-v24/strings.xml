@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="quick_help">
-        <![CDATA[
-        <p style="text-align:justify;">
-        <b>1. Xoay</b> thiết bị về hướng mà bạn mong muốn.<br><br>
-        <b>2.</b> Nhấn <b>Nút nổi</b> bên dưới để khóa hướng xoay màn hình.<br><br>
-        <b>3.</b> Nhấn <b>Nút nổi</b> lần nữa để mở khóa hướng xoay màn hình.<br><br>
-        <b>4.</b> Trên Nougat và Oreo, bạn có hẳn một Ô Cài đặt nhanh để dễ dàng truy cập.
-        </p>
-        ]]>
+        <b>1. Xoay</b> thiết bị về hướng mà bạn mong muốn.
+        \n\n<b>2.</b> Nhấn <b>Nút nổi</b> bên dưới để khóa hướng xoay màn hình.
+        \n\n<b>3.</b> Nhấn <b>Nút nổi</b> lần nữa để mở khóa hướng xoay màn hình.
+        \n\n<b>4.</b> Trên Nougat và Oreo, bạn có hẳn một Ô Cài đặt nhanh để dễ dàng truy cập.
     </string>
     <string name="how_to_use_content">Bạn cần mở ứng dụng, xoay màn hình về hướng bạn muốn (đa phần là ngang), và nhấn nút nổi
         để khóa hướng xoay, rồi quay lại ứng dụng trước hoặc quay về màn hình chính để mở ứng dụng bạn muốn. Lưu ý là nếu trình khởi chạy của bạn
@@ -26,6 +22,7 @@
         \n\nVui lòng xóa KXMH khỏi danh sách Tiết kiệm pin của Android (và của Samsung). Ứng dụng hoàn toàn dựa trên API của Android, nên nó không gây hao hụt
         năng lượng hơn so với Ô gốc.
     </string>
+    <string name="tile_has_problem">Ô cài đặt nhanh đang gặp vấn đề. Hãy gỡ ô ra và thêm lại.</string>
     <string name="please_unlock_device">Vui lòng mở khóa thiết bị.</string>
     <string name="auto_rotate">Tự động xoay</string>
     <string name="hide_or_show_app_icon">Ẩn/hiện biểu tượng ư.d.</string>

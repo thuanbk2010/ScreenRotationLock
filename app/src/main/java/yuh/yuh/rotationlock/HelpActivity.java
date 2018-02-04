@@ -24,6 +24,7 @@ import android.widget.Toast;
 public class HelpActivity extends AppCompatActivity {
 
     private WebView mWebView;
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,9 +36,10 @@ public class HelpActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_back);
-        setSupportActionBar(toolbar);
+        mToolbar = findViewById(R.id.toolbar);
+        mToolbar.setNavigationIcon(R.drawable.ic_back);
+        mToolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_more));
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(R.string.activity_help);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -51,8 +53,11 @@ public class HelpActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            getMenuInflater().inflate(R.menu.menu_help, menu);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
+                getSharedPreferences(MainActivity.PREF_FILE_NAME, MODE_PRIVATE).getBoolean("ha", false)) {
+            menu.add(Menu.NONE, MainActivity.HIDE_OR_SHOW_APP_ICON_ID, Menu.NONE, R.string.show_app_icon)
+                    .setIcon(R.drawable.app_icon)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -64,13 +69,19 @@ public class HelpActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-            case R.id.hide_or_show_app:
-                Toast.makeText(this, toggleAppIcon() ? R.string.app_icon_is_hidden_in_launcher : R.string.app_icon_is_shown_in_launcher, 1).show();
-                break;
+        int i = item.getItemId();
+        if (i == android.R.id.home) {
+            onBackPressed();
+        } else if (i == MainActivity.HIDE_OR_SHOW_APP_ICON_ID) {
+            SharedPreferences preferences = getSharedPreferences(MainActivity.PREF_FILE_NAME, MODE_PRIVATE);
+            if (preferences.getBoolean("ha", false)) {
+                PackageManager pm = this.getPackageManager();
+                ComponentName name = new ComponentName(getApplicationContext(), MainActivity.class);
+                pm.setComponentEnabledSetting(name,PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                preferences.edit().putBoolean("ha", false).apply();
+                MainActivity.showLongToast(this, R.string.app_icon_is_shown_in_launcher);
+                mToolbar.getMenu().removeItem(i);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -79,17 +90,5 @@ public class HelpActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mWebView.saveState(outState);
-    }
-
-    @RequiresApi(24)
-    private boolean toggleAppIcon() {
-        SharedPreferences preferences = getSharedPreferences(MainActivity.PREF_FILE_NAME, MODE_PRIVATE);
-        boolean isAppIconHidden = preferences.getBoolean("ha", false);
-        PackageManager pm = this.getPackageManager();
-        ComponentName name = new ComponentName(getApplicationContext(), MainActivity.class);
-        pm.setComponentEnabledSetting(name, isAppIconHidden ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-        preferences.edit().putBoolean("ha", !isAppIconHidden).apply();
-        return !isAppIconHidden;
     }
 }

@@ -32,11 +32,10 @@ class SettingsContentObserver extends ContentObserver {
     public void onChange(boolean selfChange, Uri uri) {
         super.onChange(selfChange, uri);
         boolean canWrite = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite(mContext);
-        if (canWrite) {
+        if (canWrite && mOnSettingsChangeListener != null) {
             mOnSettingsChangeListener.onSettingChange(mContext);
         }
     }
-
 
     void setOnSettingsChangeListener(OnSettingsChangeListener listener) {
         mOnSettingsChangeListener = listener;

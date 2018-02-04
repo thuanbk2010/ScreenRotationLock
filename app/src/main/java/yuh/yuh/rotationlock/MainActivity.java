@@ -50,6 +50,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static android.view.Surface.*;
 
 /**
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements
         View.OnClickListener, View.OnLongClickListener, SettingsContentObserver.OnSettingsChangeListener {
 
     public static final String PREF_FILE_NAME = "prefs";
+    public static final AtomicInteger sNextGeneratedId = new AtomicInteger();
+    public static final int HIDE_OR_SHOW_APP_ICON_ID = generateNewId();
 
     private enum FAB_ACTION { REQUEST_PERMISSION, PERFORM_LOCK }
 
@@ -95,8 +99,7 @@ public class MainActivity extends AppCompatActivity implements
             int qmo = mPreferences.getInt("qmo", ROTATION_90);
             Settings.System.putInt(mContentResolver, Settings.System.ACCELEROMETER_ROTATION,  0);
             Settings.System.putInt(mContentResolver, Settings.System.USER_ROTATION, qmo);
-            showLongToast(this, String.format(getString(R.string.quick_mode_toast),
-                    getResources().getStringArray(R.array.quick_mode_options)[qmo]));
+            showLongToast(this, getString(R.string.quick_mode_toast, getResources().getStringArray(R.array.quick_mode_options)[qmo]));
             finish();
             return;
         }
@@ -109,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.app_icon);
+//        toolbar.setNavigationIcon(R.drawable.app_icon);
         toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_more));
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.app_name);
@@ -141,11 +144,11 @@ public class MainActivity extends AppCompatActivity implements
         super.onStart();
         if (canWriteSettings()) {
             mContentResolver.registerContentObserver(Settings.System.CONTENT_URI, true, mSettingsContentObserver);
-            mHelp.setText(fromHtml(quickMode ? getString(R.string.quick_mode_is_on) : getString(R.string.quick_help)));
+            mHelp.setText(quickMode ? R.string.quick_mode_is_on : R.string.quick_help);
             mFab.setTag(FAB_ACTION.PERFORM_LOCK);
             onSettingChange(null);
         } else {
-            mHelp.setText(fromHtml(getString(R.string.request_permission)));
+            mHelp.setText(R.string.request_permission);
             mFab.setBackgroundTintList(mFabColorLocked);
             mFab.setImageResource(R.drawable.ic_settings);
             mFab.setTag(FAB_ACTION.REQUEST_PERMISSION);
@@ -172,28 +175,24 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (Build.VERSION.SDK_INT >= 24) {
+            boolean isAppIconHidden = mPreferences.getBoolean("ha", false);
+            menu.add(0, HIDE_OR_SHOW_APP_ICON_ID, 0, isAppIconHidden ? R.string.show_app_icon : R.string.hide_app_icon);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                showAboutDialog();
-                break;
-            case R.id.yuhapps:
-                showAboutDialog();
-                break;
-            case R.id.help:
-                startActivity(new Intent(this, HelpActivity.class));
-                break;
-            case R.id.quick_mode:
-                showQuickModeDialog();
-                break;
-            case R.id.hide_or_show_app:
-                boolean t = toggleAppIcon();
-                showMessage(t ? R.string.app_icon_is_hidden_in_launcher : R.string.app_icon_is_shown_in_launcher, t);
-                break;
+        int i = item.getItemId();
+//        if (i == android.R.id.home) showAboutDialog();
+        if (i == R.id.yuhapps) showAboutDialog();
+        else if (i == R.id.help) startActivity(new Intent(this, HelpActivity.class));
+        else if (i == R.id.quick_mode) showQuickModeDialog();
+        else if (i == HIDE_OR_SHOW_APP_ICON_ID) {
+            boolean t = toggleAppIcon();
+            showMessage(t ? R.string.app_icon_is_hidden_in_launcher : R.string.app_icon_is_shown_in_launcher, t);
+            item.setTitle(t ? R.string.show_app_icon : R.string.hide_app_icon);
         }
         return true;
     }
@@ -243,18 +242,6 @@ public class MainActivity extends AppCompatActivity implements
     public void onSettingChange(Context context) {
         boolean lock = isOrientationLocked();
         showMessage(lock);
-    }
-
-    private Spanned fromHtml(String resource) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return Html.fromHtml(resource, 0);
-        } else {
-            return Html.fromHtml(resource);
-        }
-    }
-
-    private Spanned fromHtml(@StringRes int resource) {
-        return fromHtml(getString(resource));
     }
 
     private boolean canWriteSettings() {
@@ -447,15 +434,15 @@ public class MainActivity extends AppCompatActivity implements
         final SharedPreferences.Editor editor = mPreferences.edit();
         AlertDialog.Builder dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.quick_mode)
-                .setMessage(fromHtml(String.format(getString(R.string.quick_mode_message),
+                .setMessage(getString(R.string.quick_mode_message,
                         getResources().getStringArray(R.array.quick_mode_options)[mPreferences.getInt("qmo", ROTATION_90)],
-                        quickMode ? getString(R.string.enabled) : getString(R.string.disabled))))
+                        quickMode ? getString(R.string.enabled) : getString(R.string.disabled)))
                 .setPositiveButton(quickMode ? R.string.disable : R.string.enable, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         editor.putBoolean("qm", !quickMode).apply();
                         showMessage(quickMode ? R.string.quick_mode_is_disabled : R.string.quick_mode_is_enabled);
-                        mHelp.setText(fromHtml(quickMode ? R.string.quick_help : R.string.quick_mode_is_on));
+                        mHelp.setText(quickMode ? R.string.quick_help : R.string.quick_mode_is_on);
                         quickMode = !quickMode;
                     }
                 })
@@ -565,6 +552,19 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     static void showLongToast(Context context, @StringRes int message) {
-        showLongToast(context, context.getString(message));
+        showLongToast(context, context.getText(message));
     }
+
+    public static int generateNewId() {
+        while (true) {
+            final int result = sNextGeneratedId.get();
+            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
+            int newValue = result + 1;
+            if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
+            if (sNextGeneratedId.compareAndSet(result, newValue)) {
+                return result;
+            }
+        }
+    }
+    
 }
